@@ -1,16 +1,9 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "brianleung.github.io",
+    "title": "Brian Leung",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington. My interests lie at the intersection of\nMy dissertation focuses on\nMy research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG)."
   }
 ]
