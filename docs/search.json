@@ -4,7 +4,49 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Zero-shot classification with Hugging Face\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\nHugging Face\n\n\nTransformers\n\n\nZero-shot classification\n\n\nTopic modeling\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2024\n\n\nBrian Leung\n\n\n\n\n\n\n  \n\n\n\n\nHow to integrate Python code in a R environment?\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\nBrian Leung\n\n\n\n\n\n\nNo matching items"
+    "text": "Zero-shot classification with Hugging Face\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\nHugging Face\n\n\nTransformers\n\n\nZero-shot classification\n\n\nTopic modeling\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2024\n\n\nBrian Leung\n\n\n\n\n\n\n  \n\n\n\n\nHow to integrate Python code with a R environment?\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\nBrian Leung\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Brian Leung",
+    "section": "",
+    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington.\nMy dissertation examines how business interests — specifically at a firm level — shape elite preferences on free trade, focusing on U.S.-China trade relations over the recent three decades. Broadly, I am interested in how the conflict and confluence of domestic interests (e.g., business, labor, human rights groups) shape foreign economic policymaking (e.g., trade and industrial policies). My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).\nI am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At Washington, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute.\nApart from academia, I am a nonproft leader and democracy advocate for Hong Kong. I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong."
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html",
+    "href": "blogs/022224BL/GettingStarted.html",
+    "title": "How to integrate Python code with a R environment?",
+    "section": "",
+    "text": "This post serves us an introduction to using Quarto (.qmd) to write a blog-style document that integrates R or Python code with text."
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
+    "href": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
+    "title": "How to integrate Python code with a R environment?",
+    "section": "Quarto (.qmd) is just like RMarkdown (.rmd)!",
+    "text": "Quarto (.qmd) is just like RMarkdown (.rmd)!\nYou can open a new Quarto Document (.qmd) in Rstudio and choose HTML as the format. This works just like a traditional RMarkdown file (.rmd).\nYou can copy and paste the following code to the preamble (i.e., top of the document) and fill out the details:\n---\ntitle: \"Give it a nice title\"\nauthor: \"Your good name\"\ndate: \"today is?\"\ncategories: [tag1, tag2, tag3...] \nmessage: false \nwarning: false\n---"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#working-with-r-code",
+    "href": "blogs/022224BL/GettingStarted.html#working-with-r-code",
+    "title": "How to integrate Python code with a R environment?",
+    "section": "Working with R code",
+    "text": "Working with R code\nInside the .qmd document, you can type text anywhere you like. To insert a code chunk, type “/” to select options from a drop-down menu (if you are using Visual editor mode). For example, I can insert the following R code chunk:\n\nlibrary(tidyverse)\n\nThen you can perform data analysis as usual:\n\ndata(iris)\n\niris %&gt;%\n  group_by(Species) %&gt;%\n  summarize(across(where(is.numeric), mean))\n\n# A tibble: 3 × 5\n  Species    Sepal.Length Sepal.Width Petal.Length Petal.Width\n  &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;\n1 setosa             5.01        3.43         1.46       0.246\n2 versicolor         5.94        2.77         4.26       1.33 \n3 virginica          6.59        2.97         5.55       2.03 \n\n\nVisualization is also easy:\n\nggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +\n  geom_point() +\n  theme_minimal()"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#working-with-python-code",
+    "href": "blogs/022224BL/GettingStarted.html#working-with-python-code",
+    "title": "How to integrate Python code with a R environment?",
+    "section": "Working with Python code",
+    "text": "Working with Python code\nQuarto document has the advantage of being able to run Python code at the same time. But this does requiries some knowledge about the language, and especially how virtual environment works for managing packages.\nTo do that from a RStudio environment, you have to first install reticulate package in R by running install.packages(\"reticulate\").\nAfter loading reticulate, you can create a virtual environment and install the required Python packages:\n\nlibrary(reticulate)\n\n# create a new environment \nvirtualenv_create(\"r-reticulate\")\n\nvirtualenv: r-reticulate\n\n# packages to install \npackages &lt;- c(\"numpy==1.26.4\", \"pandas\")\n\n# install packages to the environment\nvirtualenv_install(\"r-reticulate\", packages)\n\nUsing virtual environment 'r-reticulate' ...\n\n\nYou might have to go to Options &gt; Python &gt; Virtual Environment, and then select the correct Python interpreter.\nNow, you can run Python code! One advantage of doing it in the Quarto document (with reticulate package) is that you can reference and transport R object directly into the Python environment by calling r.object_name:\n\nimport numpy as np \nimport pandas as pd\n\niris = r.iris # transport R object into Python\niris_groupMean = iris.groupby(['Species']).mean()\niris_groupMean\n\n            Sepal.Length  Sepal.Width  Petal.Length  Petal.Width\nSpecies                                                         \nsetosa             5.006        3.428         1.462        0.246\nversicolor         5.936        2.770         4.260        1.326\nvirginica          6.588        2.974         5.552        2.026\n\n\nYou can do the reverse by accessing Python object in the R environment by calling py$object_name:\n\nglimpse(py$iris_groupMean) # back to R code\n\nRows: 3\nColumns: 4\n$ Sepal.Length &lt;dbl&gt; 5.006, 5.936, 6.588\n$ Sepal.Width  &lt;dbl&gt; 3.428, 2.770, 2.974\n$ Petal.Length &lt;dbl&gt; 1.462, 4.260, 5.552\n$ Petal.Width  &lt;dbl&gt; 0.246, 1.326, 2.026"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#conclusion",
+    "href": "blogs/022224BL/GettingStarted.html#conclusion",
+    "title": "How to integrate Python code with a R environment?",
+    "section": "Conclusion",
+    "text": "Conclusion\nQuarto document .qmd gives us an easy way to write a blog post that seamlessly integrates narrative text with code. As long as you submit a minimally reproducible Quarto document (that you can Render your document successfully), your post can be published in no time.\nFurthermore, the reticulate package enables interoperability between R and Python code in the same document. Many state-of-the-art models and packages in NLP are written in Python. Hopefully, this will encourage R users to take advantage of Python packages in a familiar environment."
   },
   {
     "objectID": "blogs/022324BL/huggingFace.html#why-hugging-face",
@@ -54,47 +96,5 @@
     "title": "Zero-shot classification with Hugging Face",
     "section": "Conclusion",
     "text": "Conclusion\nThis blog post serves as an introduction to unlock the power of Hugging Face and its transformer-based models. There are many topics that we don’t have time and space to explore here. For example:\n\nIf your text as data is moderately large in quantity (or in sequence length), you likely have to acquire additional GPU computing power via platforms like Google Colab.\nTo improve the performance of a model, you likely have to fine-tune the model to your specific data and use case (example script of fine-tuning a NLI model by Michael Burnham).\nTo assess the performance of the model (not to throw up your hands and just say “Trust AI/LLM”), you likely have to hand code a sample of the text and compute some evaluation metrics (e.g., precision, accuracy, etc) in a standard machine learning workflow"
-  },
-  {
-    "objectID": "blogs/022224BL/GettingStarted.html",
-    "href": "blogs/022224BL/GettingStarted.html",
-    "title": "How to integrate Python code in a R environment?",
-    "section": "",
-    "text": "This post serves us an introduction to using Quarto (.qmd) to write a blog-style document that integrates R or Python code with text."
-  },
-  {
-    "objectID": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
-    "href": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
-    "title": "How to integrate Python code in a R environment?",
-    "section": "Quarto (.qmd) is just like RMarkdown (.rmd)!",
-    "text": "Quarto (.qmd) is just like RMarkdown (.rmd)!\nYou can open a new Quarto Document (.qmd) in Rstudio and choose HTML as the format. This works just like a traditional RMarkdown file (.rmd).\nYou can copy and paste the following code to the preamble (i.e., top of the document) and fill out the details:\n---\ntitle: \"Give it a nice title\"\nauthor: \"Your good name\"\ndate: \"today is?\"\ncategories: [tag1, tag2, tag3...] \nmessage: false \nwarning: false\n---"
-  },
-  {
-    "objectID": "blogs/022224BL/GettingStarted.html#working-with-r-code",
-    "href": "blogs/022224BL/GettingStarted.html#working-with-r-code",
-    "title": "How to integrate Python code in a R environment?",
-    "section": "Working with R code",
-    "text": "Working with R code\nInside the .qmd document, you can type text anywhere you like. To insert a code chunk, type “/” to select options from a drop-down menu (if you are using Visual editor mode). For example, I can insert the following R code chunk:\n\nlibrary(tidyverse)\n\nThen you can perform data analysis as usual:\n\ndata(iris)\n\niris %&gt;%\n  group_by(Species) %&gt;%\n  summarize(across(where(is.numeric), mean))\n\n# A tibble: 3 × 5\n  Species    Sepal.Length Sepal.Width Petal.Length Petal.Width\n  &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;\n1 setosa             5.01        3.43         1.46       0.246\n2 versicolor         5.94        2.77         4.26       1.33 \n3 virginica          6.59        2.97         5.55       2.03 \n\n\nVisualization is also easy:\n\nggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +\n  geom_point() +\n  theme_minimal()"
-  },
-  {
-    "objectID": "blogs/022224BL/GettingStarted.html#working-with-python-code",
-    "href": "blogs/022224BL/GettingStarted.html#working-with-python-code",
-    "title": "How to integrate Python code in a R environment?",
-    "section": "Working with Python code",
-    "text": "Working with Python code\nQuarto document has the advantage of being able to run Python code at the same time. But this does requiries some knowledge about the language, and especially how virtual environment works for managing packages.\nTo do that from a RStudio environment, you have to first install reticulate package in R by running install.packages(\"reticulate\").\nAfter loading reticulate, you can create a virtual environment and install the required Python packages:\n\nlibrary(reticulate)\n\n# create a new environment \nvirtualenv_create(\"r-reticulate\")\n\nvirtualenv: r-reticulate\n\n# packages to install \npackages &lt;- c(\"numpy==1.26.4\", \"pandas\")\n\n# install packages to the environment\nvirtualenv_install(\"r-reticulate\", packages)\n\nUsing virtual environment 'r-reticulate' ...\n\n\nYou might have to go to Options &gt; Python &gt; Virtual Environment, and then select the correct Python interpreter.\nNow, you can run Python code! One advantage of doing it in the Quarto document (with reticulate package) is that you can reference and transport R object directly into the Python environment by calling r.object_name:\n\nimport numpy as np \nimport pandas as pd\n\niris = r.iris # transport R object into Python\niris_groupMean = iris.groupby(['Species']).mean()\niris_groupMean\n\n            Sepal.Length  Sepal.Width  Petal.Length  Petal.Width\nSpecies                                                         \nsetosa             5.006        3.428         1.462        0.246\nversicolor         5.936        2.770         4.260        1.326\nvirginica          6.588        2.974         5.552        2.026\n\n\nYou can do the reverse by accessing Python object in the R environment by calling py$object_name:\n\nglimpse(py$iris_groupMean) # back to R code\n\nRows: 3\nColumns: 4\n$ Sepal.Length &lt;dbl&gt; 5.006, 5.936, 6.588\n$ Sepal.Width  &lt;dbl&gt; 3.428, 2.770, 2.974\n$ Petal.Length &lt;dbl&gt; 1.462, 4.260, 5.552\n$ Petal.Width  &lt;dbl&gt; 0.246, 1.326, 2.026"
-  },
-  {
-    "objectID": "blogs/022224BL/GettingStarted.html#conclusion",
-    "href": "blogs/022224BL/GettingStarted.html#conclusion",
-    "title": "How to integrate Python code in a R environment?",
-    "section": "Conclusion",
-    "text": "Conclusion\nQuarto document .qmd gives us an easy way to write a blog post that seamlessly integrates narrative text with code. As long as you submit a minimally reproducible Quarto document (that you can Render your document successfully), your post can be published in no time.\nFurthermore, the reticulate package enables interoperability between R and Python code in the same document. Many state-of-the-art models and packages in NLP are written in Python. Hopefully, this will encourage R users to take advantage of Python packages in a familiar environment."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Brian Leung",
-    "section": "",
-    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington.\nMy dissertation examines how business interests — specifically at a firm level — shape elite preferences on free trade, focusing on U.S.-China trade relations over the recent three decades. Broadly, I am interested in how the conflict and confluence of domestic interests (e.g., business, labor, human rights groups) shape foreign economic policymaking (e.g., trade and industrial policies). My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).\nI am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At Washington, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute.\nApart from academia, I am a nonproft leader and democracy advocate for Hong Kong. I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong."
   }
 ]

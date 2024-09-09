@@ -1,5 +1,5 @@
 ---
-title: "How to integrate Python code in a R environment?"
+title: "How to integrate Python code with a R environment?"
 author: "Brian Leung"
 date: "2024-02-21"
 categories: [R, Python]
