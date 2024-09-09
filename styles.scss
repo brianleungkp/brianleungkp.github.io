@@ -10,12 +10,13 @@ $sans: "Fira Sans", sans-serif;
 // Based on UW palette: https://www.washington.edu/externalaffairs/uwmarketing/toolkits/docs/bg/WebColorPalette.pdf
 $purple: #39275B; 
 $lightpurple: #DFDDE8;
-$gold: #D7C896;
+$gold: #C79900; 
+$lightgold: #D7C896;
 
 $navbar-bg: $purple;
 $navbar-fg: $lightpurple;
-$navbar-hl: $gold;
-$link-color: $purple;
+$navbar-hl: $lightgold;
+$link-color: $gold;
 
 
 h1, h2, h3, h4, h5, h6 {
