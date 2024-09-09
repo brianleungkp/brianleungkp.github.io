@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Brian Leung"
+  google-analytics: "G-RGK7G7MTD8"
   search: false
   navbar:
     left:
