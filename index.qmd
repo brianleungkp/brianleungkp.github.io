@@ -2,16 +2,19 @@
 title: "Brian Leung"
 image: images/Leung_portrait23.jpg
 about: 
-  template: broadside
+  template: trestles
+  image-shape: rounded
   links: 
     - text: Email
       href: mailto:kpleung@uw.edu
+      icon: envelope
 
 ---
 
-  I am a Ph.D. Candidate in the Department of Political Science at University of Washington. My interests lie at the intersection of 
-  
-  My dissertation focuses on 
-  
-  My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).  
+I am a Ph.D. Candidate in the Department of Political Science at University of Washington. 
 
+My dissertation examines how business interests – specifically at a firm level – shape politicians’ preferences on free trade, focusing on the past three decades of U.S.-China trade relations. My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).
+
+I am also interested in applied statistics and computational methods, particularly the application of text-as-data/NLP in political science. At Washington, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute. 
+
+Beyond academia, I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong.

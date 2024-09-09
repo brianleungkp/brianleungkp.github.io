@@ -1,9 +1,100 @@
 [
   {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Zero-shot classification with Hugging Face\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\nHugging Face\n\n\nTransformers\n\n\nZero-shot classification\n\n\nTopic modeling\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2024\n\n\nBrian Leung\n\n\n\n\n\n\n  \n\n\n\n\nHow to integrate Python code in a R environment?\n\n\n\n\n\n\n\nR\n\n\nPython\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2024\n\n\nBrian Leung\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#why-hugging-face",
+    "href": "blogs/022324BL/huggingFace.html#why-hugging-face",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Why Hugging Face?",
+    "text": "Why Hugging Face?\nAdvances in natural language processing (NLP), particularly with the advent of of large language models (LLMs), have created exciting opportunities for social science researchers to deal with a large amount of text as data. But numerous barriers to entry existed: the knowledge, data, and computational resources required to train and fine-tune the models to specific tasks can be very daunting for us.\nSo, there is a gap between what NLP models or resources are available out there and what we as social scientists can reasonably digest and incorporate into our workflow. Researchers with a technical comparative advantage in training and fine-tuning models have already produced resources that have immense potentials for social science applications.\nFor example, PoliBERTweet is a pre-trained BERT model – a transformer-based model, much like its cousin GPT (“Generative Pre-trained Transformer”). It is pre-trained in the sense that it was trained on 83 million politics-related Tweets, making it suitable for a wide range of downstream, domain-specific tasks related to politics. But the problem is, how we as social scientists can take advantage of such readily available resources?\nThere is where Hugging Face comes into play. Much like Github, it is a community platform that allows practitioners and researchers to host and collaborate on AI models. Many state-of-the-art NLP models are available for specific downstream tasks, like text classification (e.g., for sentiment analysis or topic classification) or embedding documents to compare their similarity.\nMost importantly, it comes with a Python package – transformers – that makes downloading and implementing those pre-trained models super easy and dramatically lowers the entry cost. But it does require some knowledge in Python."
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#how-to-get-started-as-a-r-user",
+    "href": "blogs/022324BL/huggingFace.html#how-to-get-started-as-a-r-user",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "How to get started as a R user?",
+    "text": "How to get started as a R user?\nIn this post, I want to develop a workflow that centers on a R environment (e.g., writing a .rmd/.qmd, or wrangling data with tidyverse) that feels familiar to us, but one that incorporates the power of Python packages like transformers only when we need to.\nI can’t tell you how much the fear and discomfort from an interrupted workflow – switching from one language to a less-familiar one, and transporting objects between different interfaces – have discouraged people (myself included) from taking advantage of Python.\nHopefully, an integrated workflow that makes R and Python interoperable will remove the last barrier to entry to unleash the power of NLP in our research."
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#setting-up-python-in-r-with-reticulate",
+    "href": "blogs/022324BL/huggingFace.html#setting-up-python-in-r-with-reticulate",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Setting up Python in R with reticulate",
+    "text": "Setting up Python in R with reticulate\nFirst, let’s set up a virtual environment to install the required Python packages – particularly transformers via the reticulate package in R:\n\nlibrary(reticulate)\n\nvirtualenv_create(\"r-reticulate\")\n\nvirtualenv: r-reticulate\n\npackages &lt;- c(\"transformers==4.37.2\", \"tensorflow\", \"torch\", \"datasets\", \"pandas\")\n\nvirtualenv_install(\"r-reticulate\", packages)\n\nUsing virtual environment 'r-reticulate' ...\n\n\nIf it is the first time for you to install the packages, it might take some time as they are quite large in size."
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#basic-text-classification-with-transformers",
+    "href": "blogs/022324BL/huggingFace.html#basic-text-classification-with-transformers",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Basic text classification with transformers",
+    "text": "Basic text classification with transformers\nTo see if you have installed the packages and selected the correct Python interpreter, run the following code to import pipeline, the key function from transformers:\n\nfrom transformers import pipeline\n\nNow, we can take advantage of pre-trained models on Hugging Face and perform text analyses. It can be done in a few lines of code. But you must first define the language task you want to perform and select the corresponding model. For example, I can perform sentiment analysis on a text by running:\n\nclassifier = pipeline(task = \"sentiment-analysis\")\ntext = \"This blog post is not unhelpful\"\noutput = classifier(text)\nprint(output)\n\n[{'label': 'POSITIVE', 'score': 0.7062997817993164}]\n\n\nThe sentiment classifier assigns a positive label to my double-negative sentence, which is reasonable. More generically, in pipeline(...), you have to declare the task (e.g., “sentiment-analysis”) and the model. The default model “distilbert/distilbert-base-uncased-finetuned-sst-2-english” is chosen because the user doesn’t specify one, which is not a recommended practice. You can go to Hugging Face to look for specific models for your particular NLP tasks. Be aware that NLP models tend to be quite large in size (some gigabytes), so it can take a while for your first time installation."
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#classifying-political-stances-with-transformers",
+    "href": "blogs/022324BL/huggingFace.html#classifying-political-stances-with-transformers",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Classifying political stances with transformers",
+    "text": "Classifying political stances with transformers\nThe following section showcases a DeBERTa-based model trained for stance detection, first by Laurer et al and further improved on by Michael Burnham. Behind the model, there is an interesting literature called natural language inference (NLI) or textual entailment. This is suitable for detecting political or issue stances behind some text in a zero-shot setting (i.e., the model can make prediction on arbitrary labels it wasn’t trained on but we care about).\nTo perform political stance detection:\n\n# define pipeline and model\nzeroshot_classifier = pipeline(\"zero-shot-classification\", model = \"mlburnham/deberta-v3-large-polistance-affect-v1.0\")\n\n# specify the text\ntext = \"Many American jobs are shipped to Chinese factories.\"\n\n# specify the hypothesis and classes \nhypothesis_template = \"This text supports trading {} with China\"\nclasses_verbalized = [\"more\", \"less\"]\n\n# execute the pipeline \noutput = zeroshot_classifier(text, classes_verbalized, hypothesis_template=hypothesis_template, multi_label=False)\n\nprint(output)\n\n{'sequence': 'Many American jobs are shipped to Chinese factories.', 'labels': ['less', 'more'], 'scores': [0.9999955296516418, 4.500270733842626e-06]}\n\n\nThe classifier looks at the text and perform hypothesis testings: does the text (based on “common” understanding of the language) entail one hypothesis (e.g., it supports trading more with China) or the other (e.g., trading less with China)? It assigns probabilities to each hypothesis and the label with the highest probability is chosen (multiple labels are allowed as an option though). For example, the classifier correctly identify the text (“Many American jobs are shipped to Chinese factories.”) as a statement that supports trading less with China."
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#enabling-gpu-using-congress-tweets-as-example",
+    "href": "blogs/022324BL/huggingFace.html#enabling-gpu-using-congress-tweets-as-example",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Enabling GPU: using Congress Tweets as example",
+    "text": "Enabling GPU: using Congress Tweets as example\nTo provide a concrete example and workflow, below are 360 sampled Tweets made by Congress Members in recent years that talked about China:\n\nimport pandas as pd\nchina_tweets = pd.read_csv(\"china_tweets_sample.csv\")\nchina_tweets['text_clean'][1]\n\n'Simply acknowledging #HumanRightsDay today isn’t enough. China is undermining freedoms for #HongKongers + others. Saudi Arabia killed a US journalist w/impunity. Our Border Patrol has let children die in custody. Rights are under threat around the globe. We cannot be silent. HTTPURL'\n\n\nTo run large transformer models at scale, we need to enable GPU for parallel computing – the difference can be hundred-fold faster! For example, I’m using a MacBook with M1 chip. To enable Apple Silicon chip for GPU computing, run:\n\nimport torch\ndevice = torch.device(\"mps\" if torch.backends.mps.is_available() else \"cpu\")\nprint(f\"Device: {device}\")\n\nDevice: mps\n\n\nIf you’re using a Nvidia GPU (or renting GPUs on Google Colab), you can enable cuda by running device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\") instead.\nBack to the Tweets, we first need to coerce the pandas data frame into “dataset,” a preferred structure when using Hugging Face models:\n\n# coerce it to a \"dataset\"\"\nfrom datasets import Dataset\nchina_tweets_ds = Dataset.from_pandas(china_tweets)\nprint(china_tweets_ds)\n\nDataset({\n    features: ['tweet_id', 'text_clean', 'label_job', 'label_trade', 'label_tech', 'label_hr', 'label_milSec'],\n    num_rows: 360\n})\n\n\nWe then define the pipeline for the classification task:\n\n# define the pipeline\nzeroshot_classifier = pipeline(\"zero-shot-classification\", model = \"MoritzLaurer/deberta-v3-large-zeroshot-v1.1-all-33\", device=device, batch_size=16)\n\n# specify the hypothesis and classes\nhypothesis_template = \"The author of this text critizies China for {}\"\nclasses_verbalized = [\n  \"job concerns, for example, China taking away American workers' jobs\",\n  \"trade concerns, for example, China engaging in unfair trade practices\",\n  \"technology concerns, for example, China stealing American technologies or intellectual properties or IP\",\n  \"human rights concerns, for example, China repressing protests and arresting activists\",\n  \"national security concerns, for example, China posing a military threat to the US\"\n]\n\n# define a function\ndef classify_tweet(x):\n  output = zeroshot_classifier(x['text_clean'], classes_verbalized, hypothesis_template=hypothesis_template, multi_label=True)\n  return {\"output\": output}\n\nRun the function to classify the tweet using map:\n\n# run the function by using map\nchina_tweets_classified = china_tweets_ds.map(classify_tweet, batched=True)\n\n\nMap:   0%|          | 0/360 [00:00&lt;?, ? examples/s]\nMap: 100%|##########| 360/360 [02:26&lt;00:00,  2.46 examples/s]\nMap: 100%|##########| 360/360 [02:26&lt;00:00,  2.46 examples/s]\n\n\nTo transport the result back to R for wrangling:\n\nlibrary(tidyverse)\n\noutput &lt;- py$china_tweets_classified['output']\n\noutput &lt;- output %&gt;%\n  bind_rows() %&gt;%\n  mutate(labels = str_extract(labels, \".+(?= concerns)\")) %&gt;%\n  distinct() %&gt;%\n  pivot_wider(id_cols = sequence, names_from = labels, values_from = scores)\n\nWe can investigate the classification results:\n\nlibrary(DT)\ndatatable(output, filter = \"top\", options = list(pageLength=(3)))"
+  },
+  {
+    "objectID": "blogs/022324BL/huggingFace.html#conclusion",
+    "href": "blogs/022324BL/huggingFace.html#conclusion",
+    "title": "Zero-shot classification with Hugging Face",
+    "section": "Conclusion",
+    "text": "Conclusion\nThis blog post serves as an introduction to unlock the power of Hugging Face and its transformer-based models. There are many topics that we don’t have time and space to explore here. For example:\n\nIf your text as data is moderately large in quantity (or in sequence length), you likely have to acquire additional GPU computing power via platforms like Google Colab.\nTo improve the performance of a model, you likely have to fine-tune the model to your specific data and use case (example script of fine-tuning a NLI model by Michael Burnham).\nTo assess the performance of the model (not to throw up your hands and just say “Trust AI/LLM”), you likely have to hand code a sample of the text and compute some evaluation metrics (e.g., precision, accuracy, etc) in a standard machine learning workflow"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html",
+    "href": "blogs/022224BL/GettingStarted.html",
+    "title": "How to integrate Python code in a R environment?",
+    "section": "",
+    "text": "This post serves us an introduction to using Quarto (.qmd) to write a blog-style document that integrates R or Python code with text."
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
+    "href": "blogs/022224BL/GettingStarted.html#quarto-.qmd-is-just-like-rmarkdown-.rmd",
+    "title": "How to integrate Python code in a R environment?",
+    "section": "Quarto (.qmd) is just like RMarkdown (.rmd)!",
+    "text": "Quarto (.qmd) is just like RMarkdown (.rmd)!\nYou can open a new Quarto Document (.qmd) in Rstudio and choose HTML as the format. This works just like a traditional RMarkdown file (.rmd).\nYou can copy and paste the following code to the preamble (i.e., top of the document) and fill out the details:\n---\ntitle: \"Give it a nice title\"\nauthor: \"Your good name\"\ndate: \"today is?\"\ncategories: [tag1, tag2, tag3...] \nmessage: false \nwarning: false\n---"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#working-with-r-code",
+    "href": "blogs/022224BL/GettingStarted.html#working-with-r-code",
+    "title": "How to integrate Python code in a R environment?",
+    "section": "Working with R code",
+    "text": "Working with R code\nInside the .qmd document, you can type text anywhere you like. To insert a code chunk, type “/” to select options from a drop-down menu (if you are using Visual editor mode). For example, I can insert the following R code chunk:\n\nlibrary(tidyverse)\n\nThen you can perform data analysis as usual:\n\ndata(iris)\n\niris %&gt;%\n  group_by(Species) %&gt;%\n  summarize(across(where(is.numeric), mean))\n\n# A tibble: 3 × 5\n  Species    Sepal.Length Sepal.Width Petal.Length Petal.Width\n  &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;\n1 setosa             5.01        3.43         1.46       0.246\n2 versicolor         5.94        2.77         4.26       1.33 \n3 virginica          6.59        2.97         5.55       2.03 \n\n\nVisualization is also easy:\n\nggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +\n  geom_point() +\n  theme_minimal()"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#working-with-python-code",
+    "href": "blogs/022224BL/GettingStarted.html#working-with-python-code",
+    "title": "How to integrate Python code in a R environment?",
+    "section": "Working with Python code",
+    "text": "Working with Python code\nQuarto document has the advantage of being able to run Python code at the same time. But this does requiries some knowledge about the language, and especially how virtual environment works for managing packages.\nTo do that from a RStudio environment, you have to first install reticulate package in R by running install.packages(\"reticulate\").\nAfter loading reticulate, you can create a virtual environment and install the required Python packages:\n\nlibrary(reticulate)\n\n# create a new environment \nvirtualenv_create(\"r-reticulate\")\n\nvirtualenv: r-reticulate\n\n# packages to install \npackages &lt;- c(\"numpy==1.26.4\", \"pandas\")\n\n# install packages to the environment\nvirtualenv_install(\"r-reticulate\", packages)\n\nUsing virtual environment 'r-reticulate' ...\n\n\nYou might have to go to Options &gt; Python &gt; Virtual Environment, and then select the correct Python interpreter.\nNow, you can run Python code! One advantage of doing it in the Quarto document (with reticulate package) is that you can reference and transport R object directly into the Python environment by calling r.object_name:\n\nimport numpy as np \nimport pandas as pd\n\niris = r.iris # transport R object into Python\niris_groupMean = iris.groupby(['Species']).mean()\niris_groupMean\n\n            Sepal.Length  Sepal.Width  Petal.Length  Petal.Width\nSpecies                                                         \nsetosa             5.006        3.428         1.462        0.246\nversicolor         5.936        2.770         4.260        1.326\nvirginica          6.588        2.974         5.552        2.026\n\n\nYou can do the reverse by accessing Python object in the R environment by calling py$object_name:\n\nglimpse(py$iris_groupMean) # back to R code\n\nRows: 3\nColumns: 4\n$ Sepal.Length &lt;dbl&gt; 5.006, 5.936, 6.588\n$ Sepal.Width  &lt;dbl&gt; 3.428, 2.770, 2.974\n$ Petal.Length &lt;dbl&gt; 1.462, 4.260, 5.552\n$ Petal.Width  &lt;dbl&gt; 0.246, 1.326, 2.026"
+  },
+  {
+    "objectID": "blogs/022224BL/GettingStarted.html#conclusion",
+    "href": "blogs/022224BL/GettingStarted.html#conclusion",
+    "title": "How to integrate Python code in a R environment?",
+    "section": "Conclusion",
+    "text": "Conclusion\nQuarto document .qmd gives us an easy way to write a blog post that seamlessly integrates narrative text with code. As long as you submit a minimally reproducible Quarto document (that you can Render your document successfully), your post can be published in no time.\nFurthermore, the reticulate package enables interoperability between R and Python code in the same document. Many state-of-the-art models and packages in NLP are written in Python. Hopefully, this will encourage R users to take advantage of Python packages in a familiar environment."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Brian Leung",
     "section": "",
-    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington. My interests lie at the intersection of\nMy dissertation focuses on\nMy research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG)."
+    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington.\nMy dissertation examines how business interests – specifically at a firm level – shape politicians’ preferences on free trade, focusing on the past three decades of U.S.-China trade relations. My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).\nI am also interested in applied statistics and computational methods, particularly the application of text-as-data/NLP in political science. At Washington, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute.\nBeyond academia, I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong."
   }
 ]

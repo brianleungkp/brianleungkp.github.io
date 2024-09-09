@@ -3,17 +3,26 @@ project:
   output-dir: docs
 
 website:
-  title: "BRIAN LEUNG"
+  title: "Brian Leung"
+  search: false
   navbar:
-    left:
+    right:
       - href: index.qmd
         text: About
-      
+      - href: research.qmd
+        text: Research
+      - href: blog.qmd
+        text: Blog
+
+execute:
+  freeze: auto      
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: 
+      - cosmo
+      - styles.scss
+    mainfont: Roboto Condensed
     toc: true
 
 editor: visual
