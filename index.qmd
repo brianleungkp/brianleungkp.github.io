@@ -6,10 +6,10 @@ about:
   image-shape: rounded
 ---
 
-I am a Ph.D. Candidate in the Department of Political Science at University of Washington.
+I am a Ph.D. Candidate in the Department of Political Science at University of Washington (UW).
 
 My dissertation examines how business interests — specifically at a firm level — shape elite preferences on free trade, focusing on U.S.-China trade relations over the recent three decades. Broadly, I am interested in how the conflict and confluence of domestic interests (e.g., business, labor, human rights groups) shape foreign economic policymaking (e.g., trade and industrial policies). My research is supported by [APSA Doctoral Dissertation Improvement Grant (DDRIG)](https://apsanet.org/programs/doctoral-dissertation-research-improvement-grants/).
 
-I am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At Washington, I serve as a Statistical Consultant at the Center for Social Science Computation and Research ([CSSCR](https://depts.washington.edu/csscr/)) and was selected a Data Science for Social Good ([DSSG](https://escience.washington.edu/using-data-science/data-science-for-social-good/)) Fellow at eScience Institute.
+I am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At UW, I serve as a Statistical Consultant at the Center for Social Science Computation and Research ([CSSCR](https://depts.washington.edu/csscr/)) and was selected a Data Science for Social Good ([DSSG](https://escience.washington.edu/using-data-science/data-science-for-social-good/)) Fellow at eScience Institute.
 
 Apart from academia, I am a nonproft leader and democracy advocate for Hong Kong. I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong.
