@@ -6,13 +6,18 @@ website:
   title: "Brian Leung"
   search: false
   navbar:
-    right:
+    left:
       - href: index.qmd
         text: About
       - href: research.qmd
         text: Research
       - href: blog.qmd
         text: Blog
+    right: 
+      - href: mailto:kpleung@uw.edu
+        icon: envelope
+      - href: https://github.com/leungkp
+        icon: github
 
 execute:
   freeze: auto      
