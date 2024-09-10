@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Brian Leung",
     "section": "",
-    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington (UW).\nMy dissertation examines how business interests — specifically at a firm level — shape elite preferences on free trade, focusing on U.S.-China trade relations over the recent three decades. Broadly, I am interested in how the conflict and confluence of domestic interests (e.g., business, labor, human rights groups) shape foreign economic policymaking (e.g., trade and industrial policies). My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).\nI am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At UW, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute.\nApart from academia, I am a nonproft leader and democracy advocate for Hong Kong. I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong."
+    "text": "I am a Ph.D. Candidate in the Department of Political Science at University of Washington (UW).\nMy dissertation examines how business interests — specifically at a firm level — shape elite preferences on free trade, focusing on U.S.-China trade relations over the recent three decades. Broadly, I am interested in how the conflict and confluence of domestic interests (e.g., business, labor, human rights groups) shape foreign economic policymaking (e.g., trade and industrial policies). My research is supported by APSA Doctoral Dissertation Improvement Grant (DDRIG).\nI am also interested in applied statistics, causal inference, and computational methods, particularly the application of text-as-data/NLP in political science. At UW, I serve as a Statistical Consultant at the Center for Social Science Computation and Research (CSSCR) and was selected a Data Science for Social Good (DSSG) Fellow at eScience Institute.\nBeyond academia, I am a nonproft leader and democracy advocate for Hong Kong. I received a B.Soc.Sc. and a L.L.B. from University of Hong Kong."
   },
   {
     "objectID": "blogs/022224BL/GettingStarted.html",
@@ -47,6 +47,13 @@
     "title": "How to integrate Python code with a R environment?",
     "section": "Conclusion",
     "text": "Conclusion\nQuarto document .qmd gives us an easy way to write a blog post that seamlessly integrates narrative text with code. As long as you submit a minimally reproducible Quarto document (that you can Render your document successfully), your post can be published in no time.\nFurthermore, the reticulate package enables interoperability between R and Python code in the same document. Many state-of-the-art models and packages in NLP are written in Python. Hopefully, this will encourage R users to take advantage of Python packages in a familiar environment."
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Peer-viewed articles\n\nLeung, Brian, Yuan Hsiao, and Kiran Garimella. 2022. “Decentralized Yet Unifying: Digital Media and Solidarity in Hong Kong’s Anti-Extradition Movement”. Journal of Quantitative Description: Digital Media 2. Link\n\n\n\nWorking papers\n\nLeung, Brian. “Strong Businesses and Weak Politicians: The Domestic Political Economy of US-China Trade”. Working paper. PDF\nLeung, Brian. “American Firm Response to U.S.-China Technological Competition: the Case of U.S. Semiconductor Industry”. Working paper. PDF"
   },
   {
     "objectID": "blogs/022324BL/huggingFace.html#why-hugging-face",
