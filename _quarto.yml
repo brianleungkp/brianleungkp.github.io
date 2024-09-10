@@ -30,7 +30,7 @@ format:
     theme: 
       - cosmo
       - styles.scss
-    mainfont: Roboto Condensed
+    mainfont: Nunito Sans
     toc: true
 
 editor: visual
