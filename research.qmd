@@ -1,6 +1,5 @@
 ---
 title: "Research"
-toc: false
 ---
 
 ### Peer-viewed articles

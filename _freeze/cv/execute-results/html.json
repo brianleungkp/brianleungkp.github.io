@@ -2,7 +2,9 @@
   "hash": "10680504e72330a9af16e0fb9c4d7e24",
   "result": {
     "markdown": "---\ntitle: \"Curriculum vitae\"\nengine: knitr\ndate: today\npublished-title: last updated\ncv: \n  pdf: \"cv/LeungCV_Sep9.pdf\"\n---\n\n\n\n::: {.cell}\n<style type=\"text/css\">\n#title-block-header .description {\n    display: none;\n}\n</style>\n:::\n\n::: {.cell}\n<style type=\"text/css\">\n.embed-container {\n    position: relative;\n    padding-bottom: 129%;\n    height: 0;\n    overflow: hidden;\n    max-width: 100%;\n}\n\n.embed-container iframe,\n.embed-container object,\n.embed-container embed {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n}\n</style>\n:::\n\n```{=html}\n<div class=\"embed-container\">\n  <iframe src=\"cv/LeungCV_Sep9.pdf\" style=\"border: 0.5px\"></iframe>\n</div>\n```\n",
-    "supporting": [],
+    "supporting": [
+      "cv_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
