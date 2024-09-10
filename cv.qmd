@@ -4,7 +4,7 @@ engine: knitr
 date: today
 published-title: last updated
 cv: 
-  pdf: "cv/LeungCV_Sep9.pdf"
+  pdf: "cv/LeungCV.pdf"
 ---
 
 ```{r, include=FALSE}
