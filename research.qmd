@@ -1,15 +1,17 @@
 ---
 title: "Research"
-toc: true
+toc: false
 ---
 
 ### Peer-viewed articles
 
--   Leung, Brian, Yuan Hsiao, and Kiran Garimella. 2022. “Decentralized Yet Unifying: Digital Media and Solidarity in Hong Kong’s Anti-Extradition Movement”. *Journal of Quantitative Description: Digital Media* 2. [Link](https://doi.org/10.51685/jqd.2022.017)
-
+[Decentralized Yet Unifying: Digital Media and Solidarity in Hong Kong’s Anti-Extradition Movement](https://doi.org/10.51685/jqd.2022.017) (with Yuan Hsiao and Kiran Garimella)\
+*Journal of Quantitative Description: Digital Media,* 2022, 2. 
 
 ### Working papers
 
--   Leung, Brian. "Strong Businesses and Weak Politicians: The Domestic Political Economy of US-China Trade". *Working paper*. [PDF](papers/Leung_firmCongress.pdf)
+[Strong Businesses and Weak Politicians: The Domestic Political Economy of US-China Trade](papers/Leung_firmCongress.pdf)\
+Presented at GSIPE Pre-Conference Workshop, APSA, 2024
 
--   Leung, Brian. "American Firm Response to U.S.-China Technological Competition: the Case of U.S. Semiconductor Industry". *Working paper*. [PDF](papers/Leung_ChipFirms.pdf)
+[American Firm Response to U.S.-China Technological Competition: the Case of U.S. Semiconductor Industry](papers/Leung_ChipFirms.pdf)\
+Presented at GSIPE Pre-Conference Workshop, APSA, 2023
