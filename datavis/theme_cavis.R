@@ -1,5 +1,11 @@
 ### ggplot2 theme written by Chris Adolph and Brian Leung
-require(ggplot2)
+if (!require('showtext')) install.packages('showtext')
+if (!require('ggplot2')) install.packages('ggplot2')
+
+require('showtext')
+require('ggplot2')
+
+font_add_google("Roboto Condensed")
 
 ## There are several variation of the main theme in this file:
 # 1. `theme_cavis`` (basic version with no gridlines at all)
@@ -8,6 +14,9 @@ require(ggplot2)
 
 # Version 1: basic version (with no gridlines at all)
 theme_cavis <- theme(
+  ## font family 
+  text = element_text(size = 12, family = "Roboto Condensed"),
+  
   ## Removes main plot gray background
   panel.background = element_rect(fill = "white"), 
   
