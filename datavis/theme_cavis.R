@@ -52,7 +52,7 @@ theme_cavis <- theme(
   ## Legend
   legend.key = element_rect(fill = NA, color = NA),
   legend.background = element_blank(),
-  legend.title = element_blank(),
+  #legend.title = element_blank(),
   ## Remove unhelpful gray background
   
   ## Gridlines 
