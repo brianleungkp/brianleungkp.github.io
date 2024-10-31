@@ -1,0 +1,912 @@
+---
+title: "10 Lessons in Data Visualization"
+subtitle: "CSSCR Short Workshop, Fall 2025"
+author: "Brian Leung"
+institute: |
+  ### Consultant, Center for Social Science Computation and Research \
+  ### Ph.D. Candidate, Department of Political Science \
+  ### University of Washington
+format: 
+  revealjs:
+      incremental: true 
+      theme: styles.scss
+      width: 1800
+      margin: 0.2
+      fig-width: 11
+      fig-asp: 0.618
+      slide-number: true
+      cache: true
+      output-file: data_vis_10lessons.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE, cache=FALSE}
+# remotes::install_github("kjhealy/flipbookr@quarto")
+library(flipbookr)
+url <- "https://raw.githubusercontent.com/brianleungkp/brianleungkp.github.io/refs/heads/main/datavis/theme_cavis.R"
+source(url)
+```
+
+## Preview
+
+-   Developed during my TA-ship for Chris Adolph's [CS&SS 569](https://faculty.washington.edu/cadolph/?page=22)
+
+-   Based on `ggplot2` and `tidyverse`
+
+-   Code and materials available on my [personal website](https://brianleungkp.github.io/)
+
+-   Not going to cover every method or data
+
+-   But should be generalizable enough to better your vis.
+
+## Preview
+
+-   Key idea: data vis. is about *storytelling*
+
+-   How to tell a good story?
+
+    -   Get rid of extraneous and distracting details
+
+    -   Provide enough context to situate the story
+
+    -   Accentuate interesting or surprising patterns
+
+-   Ask yourself: What is the main takeaway with a graph for readers?
+
+## 10 lessons
+
+:::::: columns
+::: {.column width="33%"}
+-   *Get rid of things*
+    1.  Start with minimalist aesthetics
+    2.  Get rid of excessive ink or space
+    3.  Replace bad labels
+:::
+
+::: {.column width="33%"}
+-   *Accentuate patterns*
+    4.  Choose nice colors
+    5.  Use small multiples
+    6.  Diagonalize (sort) whenever possible
+:::
+
+::: {.column width="33%"}
+-   *Provide context*
+    7.  Highlight observations
+    8.  Juxtapose observations\
+    9.  Present uncertainty
+:::
+::::::
+
+::: center
+-   *Last but not least*
+    10. Save graphics with code
+:::
+
+# Set up {background-color="#DFDDE8"}
+
+## Gapminder data
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+## Install pacakges
+# install.packages(c("tidyverse", "gapminder", "scales", "RColorBrewer", "ggrepel", "ggforce", "modelsummary"))
+
+## Load and inspect data from gapminder:
+library(tidyverse)
+library(gapminder)
+
+gapminder %>%
+  print(n = 100)
+```
+
+`r chunq_reveal("basic1.0", break_type = "non_seq", title = "Basic ggplot2")`
+
+```{r}
+#| label: "basic1.0"
+#| echo: false
+#| eval: false
+
+## Establish `aes`thetics mappings between 
+## variables and visual properties: 
+ggplot(            
+  data = gapminder,
+  mapping = aes(   #BREAK2
+      x = gdpPercap,#BREAK2
+      y = lifeExp   #BREAK3
+    )              #BREAK2
+  )
+```
+
+`r chunq_reveal("basic1.1", break_type = "non_seq", title = "Basic ggplot2")`
+
+```{r}
+#| label: "basic1.1"
+#| echo: false
+#| eval: false
+
+## Plot them in specific `geom_` layers: 
+ggplot(            
+  data = gapminder,
+  mapping = aes(   
+     x = gdpPercap, 
+     y = lifeExp
+    )                
+  ) +
+  geom_point() 
+```
+
+`r chunq_reveal("basic1.2", break_type = "non_seq", title = "Basic ggplot2")`
+
+```{r}
+#| label: "basic1.2"
+#| echo: false
+#| eval: false
+
+## You can technically map many variables
+## But the curse of dimensionality!
+ggplot(            #BREAK
+  data = gapminder,#BREAK
+  mapping = aes(   #BREAK
+    x = gdpPercap, #BREAK
+    y = lifeExp,#BREAK
+    color = continent, #BREAK2
+    shape = continent, #BREAK3
+    size = log(pop), #BREAK4
+    alpha = year #BREAK5
+    )                #BREAK
+  ) +#BREAK
+  geom_point() #BREAK
+```
+
+`r chunq_reveal("basic1.3", break_type = "non_seq", title = "Basic ggplot2")`
+
+```{r}
+#| label: "basic1.3"
+#| echo: false
+#| eval: false
+
+## Simpler syntax
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+  geom_point() 
+```
+
+# Lesson 1: Start with minimalist aesthetics {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson1.1", break_type = "non_seq", title = "Lesson 1: Start with minimalist aesthetics")`
+
+```{r}
+#| label: "lesson1.1"
+#| echo: false
+#| eval: false
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+geom_point() +
+theme( #BREAK2             
+  panel.background = element_rect(fill = "white"),#BREAK2
+  aspect.ratio = 1/1.618,#BREAK3
+  axis.line.x.bottom = element_line(linewidth = 0.2),#BREAK4
+  panel.grid.major.y = element_line(color = "gray75", linewidth = 0.1),#BREAK5
+  panel.grid.major.x = element_line(color = "gray75", linewidth = 0.1)#BREAK6
+) #BREAK2
+```
+
+`r chunq_reveal("lesson1.2", break_type = "rotate", title = "Lesson 1: Start with minimalist aesthetics")`
+
+```{r}
+#| label: "lesson1.2"
+#| echo: false
+#| eval: true
+#| output: false
+
+## A customized theme
+url <- "https://raw.githubusercontent.com/brianleungkp/brianleungkp.github.io/refs/heads/main/datavis/theme_cavis.R"
+source(url)
+
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+  geom_point() +
+  theme_cavis +  #ROTATE
+  theme_cavis_hgrid + #ROTATE
+  theme_cavis_vgrid + #ROTATE
+  theme_cavis_grids  #ROTATE
+```
+
+`r chunq_reveal("lesson1.3", title = "Lesson 1: Start with minimalist aesthetics")`
+
+```{r}
+#| label: "lesson1.3"
+#| echo: false
+#| eval: false
+
+## Or from ggplot2
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+geom_point() +
+theme_minimal(base_family = "Roboto Condensed")
+```
+
+# Lesson 2: Get rid of excessive space or ink {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson2.1", title = "Lesson 2: Get rid of excessive space or ink")`
+
+```{r}
+#| label: "lesson2.1"
+#| echo: false
+#| eval: false
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+  geom_point() +
+  theme_cavis_grids +
+  scale_x_continuous(trans = "log") +
+  theme(plot.background = element_rect(color = "black", linewidth = 1, linetype = 3))
+```
+
+`r chunq_reveal("lesson2.2", break_type = "rotate", title = "Lesson 2: Get rid of excessive space or ink")`
+
+```{r}
+#| label: "lesson2.2"
+#| echo: false
+#| eval: false
+ggplot(gapminder, 
+       aes(x = gdpPercap, 
+           y = lifeExp, 
+           color = continent)) +
+  geom_point() +
+  theme_cavis_grids +
+  scale_x_continuous(trans = "log") + 
+  theme(legend.position = "top", plot.background = element_rect(color = "black", linewidth = 1, linetype = 3)) + #ROTATE
+  theme(legend.position = "bottom") + #ROTATE
+  theme(legend.position = "top")#ROTATE
+```
+
+`r chunq_reveal("lesson2.3", title = "Lesson 2: Get rid of excessive space or ink")`
+
+```{r}
+#| label: "lesson2.3"
+#| echo: false
+#| eval: true
+gapminder %>%
+  group_by(country, continent) %>%
+  summarize(lifeExp_mean = mean(lifeExp)) %>%
+  ungroup() %>%
+  slice_sample(n = 20) ->
+  lifeExp_mean_sample
+```
+
+`r chunq_reveal("lesson2.4", break_type = "non_seq", title = "Lesson 2: Get rid of excessive space or ink")`
+
+```{r}
+#| label: "lesson2.4"
+#| echo: false
+#| eval: false
+ggplot(lifeExp_mean_sample,#BREAK
+       aes(y = fct_reorder(country, lifeExp_mean), #BREAK
+           x = lifeExp_mean)) +#BREAK
+  geom_col(#BREAK
+    aes(fill = continent)#BREAK2
+  ) #BREAK
+```
+
+`r chunq_reveal("lesson2.5", title = "Lesson 2: Get rid of excessive space or ink")`
+
+```{r}
+#| label: "lesson2.5"
+#| echo: false
+#| eval: false
+ggplot(lifeExp_mean_sample,
+       aes(y = fct_reorder(country, lifeExp_mean), 
+           x = lifeExp_mean,
+           color = continent)) +
+  theme_cavis_hgrid +
+  theme(aspect.ratio = 1.618,
+        legend.position = "top") +
+  geom_point(size = 7) +
+  geom_text(aes(label = round(lifeExp_mean, 0)), 
+            color = "white", 
+            size = 3.5) +
+  labs(y = NULL, 
+       x = "Avg. life expectancy") +
+  guides(
+    color = guide_legend(
+      override.aes = list(size = 3)
+    )
+  ) 
+```
+
+# Lesson 3: Replace bad labels {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson3.1", break_type = "non_seq", title = "Lesson 3: Replace bad labels")`
+
+```{r}
+#| label: "lesson3.1"
+#| echo: false
+#| eval: false
+library(scales)
+
+ggplot(gapminder,                 #BREAK
+       aes(x = gdpPercap, y = lifeExp, #BREAK
+           color = continent)) +  #BREAK
+  geom_point() +                  #BREAK 
+  theme_cavis_grids +             #BREAK
+  theme(legend.position = "top") + #BREAK
+  scale_y_continuous( #BREAK2
+    breaks = seq(30, 80, 10) #BREAK2
+  ) +#BREAK2
+  scale_x_continuous( #BREAK3
+    trans = "log10",#BREAK3
+    breaks = breaks_log(n = 6, base = 10),#BREAK4
+    labels = label_comma()#BREAK5
+  ) +#BREAK3
+  labs( #BREAK6
+    x = "GDP per capita (logged)", #BREAK6
+    y = "Life expectancy",#BREAK6
+    title = "Positive association between GDP per capita and life expectancy",#BREAK7
+    subtitle = "Data source: Gapminder"#BREAK7
+  )#BREAK6
+```
+
+# Lesson 4: Choose nice colors {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson4.1", title = "Lesson 4: Choose nice colors")`
+
+```{r}
+#| label: "lesson4.1"
+#| echo: false
+#| eval: true
+#| output: false
+library(RColorBrewer)
+
+## see all palettes
+display.brewer.all()
+
+## choose specific colors
+set1 <- brewer.pal(n = 5, name = "Set1")
+dark2 <- brewer.pal(n = 5, name = "Dark2")
+
+## inspect Hex codes
+print(set1); print(dark2)
+```
+
+`r chunq_reveal("lesson4.3", break_type = "rotate", title = "Lesson 4: Choose nice colors")`
+
+```{r}
+#| label: "lesson4.3"
+#| echo: false
+#| eval: false
+ggplot(gapminder,                      
+       aes(x = gdpPercap, y = lifeExp, 
+           color = continent)) +
+  theme_cavis_grids +
+  scale_x_continuous(trans = "log10") +
+  theme(legend.position = "top") +
+  geom_point(alpha = 0.8) + 
+  scale_color_manual(values = set1)  + #ROTATE
+  scale_color_manual(values = dark2) + #ROTATE
+  scale_color_brewer(type = "qual", palette = 4) +#ROTATE
+  scale_color_brewer(type = "qual", palette = 7) #ROTATE
+```
+
+# Lesson 5: Use small multiples {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson5.1", title = "Lesson 5: Use small multiples")`
+
+```{r}
+#| label: "lesson5.1"
+#| echo: false
+#| eval: true
+## create a decade variable
+gapminder %>%
+  mutate(decade = year %/% 10) %>%
+  mutate(decade = decade * 10) ->
+  gapminder
+
+## find the means of gdpPerca and lifeExp
+gdpPercap_mean <- log(mean(gapminder$gdpPercap))
+lifeExp_mean <- mean(gapminder$lifeExp)
+```
+
+`r chunq_reveal("lesson5.2", title = "Lesson 5: Use small multiples")`
+
+```{r}
+#| label: "lesson5.2"
+#| echo: false
+#| eval: false
+
+## Method 1: facet_grid
+ggplot(gapminder, 
+       aes(x = log(gdpPercap), 
+           y = lifeExp)) +
+  theme_cavis_grids +
+  facet_grid(continent ~ decade) +
+  geom_point(alpha = 0.5) +
+  geom_vline(xintercept = gdpPercap_mean, 
+             linetype = 2, 
+             color = "grey") +
+  geom_hline(yintercept = lifeExp_mean, 
+             linetype = 2, 
+             color = "grey") 
+```
+
+`r chunq_reveal("lesson5.3", title = "Lesson 5: Use small multiples")`
+
+```{r}
+#| label: "lesson5.3"
+#| echo: false
+#| eval: true
+
+## facet_grid vs. facet_wrap
+## Imagine we have some NAs 
+gapminder %>%
+  group_by(continent, decade) %>%
+  nest() %>%
+  ungroup() %>%
+  slice_sample(n = 10) %>%
+  unnest(cols = data) ->
+  gapminder_sample
+```
+
+`r chunq_reveal("lesson5.4", break_type = "rotate", title = "Lesson 5: Use small multiples")`
+
+```{r}
+#| label: "lesson5.4"
+#| echo: false
+#| eval: false
+
+## facet_grid vs. facet_wrap
+ggplot(gapminder_sample, 
+       aes(x = log(gdpPercap), 
+           y = lifeExp)) +
+  theme_cavis_grids +
+  geom_point(alpha = 0.5) +
+  facet_grid(continent ~ decade) + #ROTATE
+  facet_wrap(continent ~ decade) + #ROTATE
+  facet_wrap(continent ~ decade, nrow = 2) #ROTATE
+```
+
+`r chunq_reveal("lesson5.5", title = "Lesson 5: Use small multiples")`
+
+```{r}
+#| label: "lesson5.5"
+#| echo: false
+#| eval: false
+
+## facet_wrap is more flexible
+## but use it carefully...
+ggplot(gapminder_sample, 
+       aes(x = lifeExp)) +
+  geom_histogram() +
+  facet_wrap(~ country, nrow = 6)
+```
+
+# Lesson 6: Diagonalize (sort) whenever possible {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson6.1", title = "Lesson 6: Diagonalize (sort) whenever possible")`
+
+```{r}
+#| label: "lesson6.1"
+#| echo: false
+#| eval: true
+#| output: false
+
+## 1. categorize lifeExp 
+## 2. select on Asia & Africa
+gapminder %>%
+  mutate(lifeExp_cat = cut(lifeExp, 5, dig.lab = 2)) %>%
+  filter(continent %in% c("Asia", "Africa")) ->
+  gapminder_aa
+```
+
+`r chunq_reveal("lesson6.2", title = "Lesson 6: Diagonalize (sort) whenever possible")`
+
+```{r}
+#| label: "lesson6.2"
+#| echo: false
+#| eval: false
+ggplot(gapminder_aa,
+       aes(x = year,
+           y = country,
+           fill = lifeExp_cat)) +
+  geom_tile() +
+  scale_fill_brewer(palette = "YlGnBu") 
+```
+
+`r chunq_reveal("lesson6.3", break_type = "non_seq", title = "Lesson 6: Diagonalize (sort) whenever possible")`
+
+```{r}
+#| label: "lesson6.3"
+#| echo: false
+#| eval: false
+ggplot(gapminder_aa,#BREAK 
+       aes(x = year,#BREAK
+           y = fct_reorder(country, lifeExp),#BREAK
+           fill = lifeExp_cat)) +#BREAK
+  geom_tile() +#BREAK
+  scale_fill_brewer(palette = "YlGnBu") + #BREAK
+  labs(y = NULL, x = NULL,#BREAK2
+       fill = "Life Expectancy") +#BREAK2
+  theme_cavis +#BREAK3
+  theme(aspect.ratio = 1.618,#BREAK3
+        text = element_text(size = 8), #BREAK4
+        axis.text.y.left = element_text(size = 6), #BREAK5
+        legend.position = "top",#BREAK6
+        legend.text.position = "top",#BREAK7
+        legend.key.height = unit(0.15, "cm"),#BREAK8
+        legend.key.width = unit(0.75, "cm")#BREAK9
+        ) + #BREAK3
+  coord_fixed(expand = FALSE)#BREAK10
+```
+
+# Lesson 7: Highlight interesting observations {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson7.1", omit = "#ROTATE", break_type = "auto", title = "Lesson 7: Highlight interesting observations")`
+
+```{r}
+#| label: "lesson7.1"
+#| echo: false
+#| eval: true
+#| output: false
+library(ggrepel)
+
+gapminder_aa %>%
+  filter(year == 2007) ->
+  gapminder_aa_07 
+
+ggplot(gapminder_aa_07,
+         aes(x = gdpPercap, 
+             y = lifeExp)) +
+  theme_cavis_grids +
+  geom_point() +
+  scale_x_continuous(trans = "log10") +
+  geom_text(aes(label = country)) + #OMIT
+  geom_text_repel(aes(label = country)) + #ROTATE
+  geom_label_repel(aes(label = country)) #ROTATE
+```
+
+`r chunq_reveal("lesson7.1", omit = "#OMIT", break_type = "rotate", title = "Lesson 7: Highlight interesting observations")`
+
+`r chunq_reveal("lesson7.2", break_type = "non_seq", title = "Lesson 7: Highlight interesting observations")`
+
+```{r}
+#| label: "lesson7.2"
+#| echo: false
+#| eval: false
+## any unusual obs
+ggplot(gapminder_aa_07,#BREAK
+         aes(x = gdpPercap, #BREAK
+             y = lifeExp)) +#BREAK
+  theme_cavis_grids +#BREAK
+  geom_point() +#BREAK
+  scale_x_continuous(trans = "log10") +#BREAK
+  geom_smooth( #BREAK2
+    method = "lm", #BREAK3
+    color = "grey30" #BREAK4
+  ) #BREAK2
+```
+
+`r chunq_reveal("lesson7.3", break_type = "auto", title = "Lesson 7: Highlight interesting observations")`
+
+```{r}
+#| label: "lesson7.3"
+#| echo: false
+#| eval: true
+#| output: false
+library(broom)
+
+lm_res <- lm(lifeExp ~ log10(gdpPercap), 
+             data = gapminder_aa_07)
+
+lm_res %>%
+  augment(data = gapminder_aa_07) ->
+  gapminder_aa_07_augmented
+
+gapminder_aa_07_augmented %>%
+  slice_max(order_by = abs(.resid), n = 5) ->
+  outliers
+```
+
+`r chunq_reveal("lesson7.4", break_type = "non_seq", title = "Lesson 7: Highlight interesting observations")`
+
+```{r}
+#| label: "lesson7.4"
+#| echo: false
+#| eval: false
+library(ggforce)
+
+ggplot(gapminder_aa_07,#BREAK
+         aes(x = gdpPercap, #BREAK
+             y = lifeExp)) +#BREAK
+  theme_cavis_grids +#BREAK
+  geom_point() +#BREAK
+  scale_x_continuous(trans = "log10") +#BREAK
+  geom_smooth( #BREAK
+    method = "lm", #BREAK
+    color = "grey30" #BREAK
+  ) + #BREAK
+  geom_text_repel(data = outliers, #BREAK2
+                  aes(label = country)) + #BREAK2
+  geom_mark_ellipse(data = outliers,#BREAK3 
+                    linetype = 2) +#BREAK3
+  coord_cartesian(clip = "off")#BREAK4
+```
+
+# Lesson 8: Juxtapose observations {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson8.1", break_type = "auto", title = "Lesson 8: Juxtapose observations")`
+
+```{r}
+#| label: "lesson8.1"
+#| echo: false
+#| eval: true
+#| output: false
+gapminder %>%
+  filter(continent %in% c("Asia")) ->
+  gapminder_asia
+
+ggplot(gapminder_asia,
+       aes(x = year, 
+           y = log(gdpPercap),
+           color = country)) +
+  theme_cavis_hgrid +
+  geom_line() 
+```
+
+`r chunq_reveal("lesson8.2", break_type = "auto", title = "Lesson 8: Juxtapose observations")`
+
+```{r}
+#| label: "lesson8.2"
+#| echo: false
+#| eval: false
+set1 <- RColorBrewer::brewer.pal(n = 5, "Set1")
+orange <- set1[5]; blue <- set1[2]
+
+ggplot(gapminder_asia,
+       aes(x = year, 
+           y = log(gdpPercap),
+           group = country)) +
+  theme_cavis_hgrid +
+  geom_line(color = "grey90") +
+  geom_line(
+    data = filter(gapminder_asia, 
+                  country == "Korea, Rep."), 
+    color = blue
+  ) +
+  geom_line(
+    data = filter(gapminder_asia, 
+                  country == "Korea, Dem. Rep."), 
+    color = orange
+  ) +
+  annotate("text", label = "South Korea",
+           x = 2007, y = 10.2,
+           color = blue) +
+  annotate("text", label = "North Korea",
+           x = 2007, y = 7.6,
+           color = orange) 
+```
+
+# Lesson 9: Present uncertainty {background-color="#DFDDE8"}
+
+`r chunq_reveal("lesson9.1", break_type = "auto", title = "Lesson 9: Present uncertainty")`
+
+```{r}
+#| label: "lesson9.1"
+#| echo: false
+#| eval: true
+#| output: false
+## Run some regression models
+gapminder %>%
+  mutate(decade = factor(decade)) %>%
+  mutate(continent = fct_relevel(continent, "Asia")) ->
+  gapminder
+
+m1 <- lifeExp ~ log(gdpPercap) + log(pop)
+m2 <- lifeExp ~ log(gdpPercap) + log(pop) + continent
+m3 <- lifeExp ~ log(gdpPercap) + log(pop) + continent + decade
+
+m1_res <- lm(m1, data = gapminder)
+m2_res <- lm(m2, data = gapminder)
+m3_res <- lm(m3, data = gapminder)
+```
+
+## Lesson 9: Present uncertainty
+
+```{css, echo=FALSE}
+.table, th, td {
+  font-size: 0.6em;
+} 
+.table tbody td, .table thead tr {
+    white-space: nowrap;
+}
+```
+
+```{r}
+#| echo: true
+#| output-location: column
+library(modelsummary)
+
+modelsummary(list(m1_res, m2_res, m3_res), 
+             gof_map = c("nobs", "r.squared"),
+             stars = TRUE) 
+```
+
+`r chunq_reveal("lesson9.2", break_type = "auto", title = "Lesson 9: Present uncertainty")`
+
+```{r}
+#| label: "lesson9.2"
+#| echo: false
+#| eval: true
+#| output: false
+library(broom)
+
+tidy(m1_res, conf.int = T) %>% 
+  mutate(model = "M1: baseline") %>% 
+  filter(term != "(Intercept)") ->
+  m1_res_tidy
+
+tidy(m2_res, conf.int = T) %>% 
+  mutate(model = "M2: w/ continent FEs") %>% 
+  filter(term != "(Intercept)") ->
+  m2_res_tidy 
+
+tidy(m3_res, conf.int = T) %>% 
+  mutate(model = "M3: w/ continent + decade FEs") %>%
+  filter(term != "(Intercept)") ->
+  m3_res_tidy 
+
+all_res_tidy <- bind_rows(m1_res_tidy, m2_res_tidy, m3_res_tidy) 
+```
+
+`r chunq_reveal("lesson9.3", title = "Lesson 9: Present uncertainty", chunk_options = "fig.width = 7, fig.align = 'center'")`
+
+```{r}
+#| label: "lesson9.3"
+#| echo: false
+#| eval: false
+ggplot(m2_res_tidy,
+       aes(y = fct_reorder(term, estimate), 
+           x = estimate, 
+           xmin = conf.low, 
+           xmax = conf.high)) +
+  theme_cavis_vgrid +
+  geom_vline(
+    xintercept = 1, 
+    linetype = 2, 
+    color = "grey"
+  ) +
+  geom_pointrange() +
+  scale_x_continuous(
+    sec.axis = dup_axis(name = NULL)
+  ) +
+  labs(y = NULL, x = "Estimate")
+```
+
+`r chunq_reveal("lesson9.4", break_type = "non_seq", title = "Lesson 9: Present uncertainty", chunk_options = "fig.width = 7, fig.align = 'center'")`
+
+```{r}
+#| label: "lesson9.4"
+#| echo: false
+#| eval: false
+blues <- RColorBrewer::brewer.pal(9, "Blues")
+blues <- blues[c(3, 6, 9)]
+
+all_res_tidy %>% #BREAK
+  filter(term %in% c("log(gdpPercap)", "log(pop)")) %>% #BREAK2
+  ggplot(aes(y = fct_reorder(term, estimate), #BREAK3
+             x = estimate, #BREAK3
+             xmin = conf.low, #BREAK3
+             xmax = conf.high,#BREAK3
+             color = model)) +#BREAK3
+  theme_cavis_vgrid + #BREAK4
+  geom_vline(xintercept = 0, linetype = 2, color = "grey") +#BREAK5
+  geom_pointrange( #BREAK6
+    position = position_dodge2(width = 0.5) #BREAK7
+  ) +#BREAK6
+  scale_color_manual(values = blues) + #BREAK8
+  theme(legend.position = "top") +#BREAK9
+  scale_x_continuous( #BREAK10
+    sec.axis = dup_axis(name = NULL)#BREAK10
+  ) +#BREAK10
+  labs(y = NULL, x = "Estimate")#BREAK10
+```
+
+# Lesson 10: Save graphics with code {background-color="#DFDDE8"}
+
+## Lesson 10: Save graphics with code
+
+Please don't use:
+
+![](plot/saveRgraphic.png){width="500," fig-align="center"}
+
+## Lesson 10: Save graphics with code
+
+```{r}
+#| echo: true
+#| eval: true
+#| output-location: column
+ggplot(gapminder_aa_07, aes(x = gdpPercap, y = lifeExp)) +
+  theme_cavis_grids +
+  geom_point() +
+  scale_x_continuous(trans = "log10") +
+  geom_smooth(method = "lm", color = "grey30") +
+  labs(y = "Life expectancy", 
+       x = "GDP per capita (logged)") ->
+  plot1
+
+plot1
+```
+
+## Lesson 10: Save graphics with code
+
+::::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: true
+width = 7
+ggsave("plot/gdp_lifExp_width7.png", 
+       width = width, 
+       height = width/1.618)
+```
+:::
+
+::: {.column width="60%"}
+![](plot/gdp_lifExp_width7.png)
+:::
+:::::
+
+## Lesson 10: Save graphics with code
+
+::::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: true
+#| eval: true
+width = 14
+ggsave("plot/gdp_lifExp_width14.png", 
+       width = width, 
+       height = width/1.618)
+```
+:::
+
+::: {.column width="60%"}
+![](plot/gdp_lifExp_width14.png)
+:::
+:::::
+
+## Lesson 10: Save graphics with code
+
+::: nonincremental
+-   PNG is a raster image with lossless compression (better quality than JPG)
+
+-   But PDF -- vector image -- is often preferred, especially if you work with LaTeX
+:::
+
+```{r}
+#| echo: true
+#| eval: false
+width = 8
+ggsave("plot/gdp_lifExp.pdf", 
+       width = width, 
+       height = width/1.618,
+       device = cairo_pdf # only for fancy font 
+       )
+```
+
+# Thank you {background-color="#DFDDE8"}
+
+Website: <https://brianleungkp.github.io/>
+
+Email: [kpleung\@uw.edu](mailto:kpleung@uw.edu)

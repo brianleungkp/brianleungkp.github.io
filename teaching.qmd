@@ -1,0 +1,13 @@
+---
+title: "Teaching"
+---
+
+### Data visualization
+
+#### *10 Lessons in Data Visualization*
+
+- A short workshop offered at the Center for Social Science Computation and Research (CSSCR)
+
+- [Slides](datavis/data_vis_lab/data_vis_10lessons.qmd) with step-by-step code and output (written with `flipbookr`)
+
+- A [customized theme](datavis/theme_cavis.R) for ggplot2
