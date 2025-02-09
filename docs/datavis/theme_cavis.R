@@ -6,6 +6,7 @@ require('showtext')
 require('ggplot2')
 
 font_add_google("Roboto Condensed", "Roboto Condensed")
+showtext_auto()
 
 ## There are several variation of the main theme in this file:
 # 1. `theme_cavis`` (basic version with no gridlines at all)
