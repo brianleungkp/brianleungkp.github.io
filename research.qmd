@@ -2,15 +2,15 @@
 title: "Research"
 ---
 
-### Peer-viewed articles
+### Selected peer-viewed articles
 
 [Decentralized Yet Unifying: Digital Media and Solidarity in Hong Kong’s Anti-Extradition Movement](https://doi.org/10.51685/jqd.2022.017) (with Yuan Hsiao and Kiran Garimella)\
 *Journal of Quantitative Description: Digital Media,* 2022, 2.
 
 ### Working papers
 
-[Strong Businesses and Weak Politicians: The Domestic Political Economy of US-China Trade](papers/Leung_firmCongress.pdf)\
-Presented at GSIPE Pre-Conference Workshop, APSA, 2024
+[Firm Lobbying, Trade Rhetoric, and the Unraveling of the U.S.-China Free Trade Consensus](papers/Leung_firmLobby.pdf)\
+Earlier versions presented at ISA, 2025; GSIPE Pre-Conference Workshop, APSA, 2024
 
 [American Firm Response to U.S.-China Technological Competition: the Case of U.S. Semiconductor Industry](papers/Leung_ChipFirms.pdf)\
 Presented at GSIPE Pre-Conference Workshop, APSA, 2023
