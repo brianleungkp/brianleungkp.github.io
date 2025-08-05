@@ -1,0 +1,3398 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Brian Leung">
+  <title>Brian Leung – Efficient R Programming</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-RGK7G7MTD8"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RGK7G7MTD8', { 'anonymize_ip': true});
+  </script>
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <style>
+  .v-center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+  }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Efficient R Programming</h1>
+  <p class="subtitle">Working with Many Columns, Functions, and Models</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Brian Leung 
+</div>
+        <p class="quarto-title-affiliation">
+            CSSCR &amp; Political Science, UW
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<ul>
+<li><p>Rule of thumb: “consider writing a <strong>function</strong> whenever you’ve copied and pasted a block of code more than twice”</p></li>
+<li><p>What is in a function?</p>
+<ul>
+<li>Input → Output</li>
+</ul></li>
+<li><p>In R, you can write a named function</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>multiply <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) { x <span class="sc">*</span> y }</span>
+<span id="cb1-2"><a></a><span class="fu">multiply</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</section>
+<section id="introduction-1" class="slide level2">
+<h2>Introduction</h2>
+<ul>
+<li><p>Benefits of functional programming</p>
+<ul>
+<li><p>Reduce redundancy &amp; improve readability</p>
+<ul>
+<li>Less copy-and-paste and mistakes; more reusable</li>
+</ul></li>
+<li><p>Encourage modular thinking</p>
+<ul>
+<li>Break complex workflows into small, testable functions</li>
+</ul></li>
+<li><p>Enhance scalability</p>
+<ul>
+<li>Apply across many observations, columns or datasets</li>
+</ul></li>
+<li><p>tidyverse pipelines friendly</p>
+<ul>
+<li>Integrate with <code>mutate()</code>, <code>across()</code>, <code>map()</code></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="operations-in-r" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li>Step back and think about basic operations in R</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>nums <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb3-2"><a></a>nums</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+</div>
+</section>
+<section id="operations-in-r-1" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li>What if I want to add 1 to each and every value?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>nums <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb5-2"><a></a>nums <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+</div>
+</div>
+<ul>
+<li>Why it works?</li>
+</ul>
+</section>
+<section id="operations-in-r-2" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li>It’s like having two vectors of the same length</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>nums</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>ones <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb9-2"><a></a>ones</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 1 1 1 1 1 1 1 1</code></pre>
+</div>
+</div>
+<ul>
+<li>And adding two vectors together <em>at once</em></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>nums <span class="sc">+</span> ones</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+</div>
+</div>
+</section>
+<section id="operations-in-r-3" class="slide level2">
+<h2>Operations in R</h2>
+<div class="v-center-container">
+<p>Vectorized operation is extremely fast and efficient</p>
+</div>
+</section>
+<section id="operations-in-r-4" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li>Let’s go to another extreme: for loop</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(nums)) {</span>
+<span id="cb13-2"><a></a>  <span class="fu">print</span>(nums[i] <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb13-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11</code></pre>
+</div>
+</div>
+</section>
+<section id="operations-in-r-5" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li><p>It iterates through each and every value</p>
+<ul>
+<li>It’s generally slower and involves more memory &amp; computational overhead</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fl">1e6</span></span>
+<span id="cb15-2"><a></a></span>
+<span id="cb15-3"><a></a><span class="fu">system.time</span>({</span>
+<span id="cb15-4"><a></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb15-5"><a></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+  0.001   0.001   0.002 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">system.time</span>({</span>
+<span id="cb17-2"><a></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)) x[i] <span class="ot">&lt;-</span> x[i] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb17-3"><a></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+  0.032   0.000   0.033 </code></pre>
+</div>
+</div>
+</section>
+<section id="operations-in-r-6" class="slide level2">
+<h2>Operations in R</h2>
+<ul>
+<li><p>Vectorized operation</p>
+<ul>
+<li>“Do this operation on the whole vector at once!”</li>
+</ul></li>
+<li><p>For loop</p>
+<ul>
+<li>“Do this, then this, then … – repeat manually for each element!”</li>
+</ul></li>
+<li><p>Functional programming</p>
+<ul>
+<li>“Define a function and apply it automatically to each element or column!”</li>
+</ul></li>
+</ul>
+</section>
+<section id="functions-and-map" class="slide level2">
+<h2>Functions and map()</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>add_one <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-2"><a></a>  x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb19-3"><a></a>}</span>
+<span id="cb19-4"><a></a></span>
+<span id="cb19-5"><a></a><span class="fu">add_one</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-1" class="slide level2">
+<h2>Functions and map()</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">library</span>(purrr)</span>
+<span id="cb21-2"><a></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, add_one)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 2
+
+[[2]]
+[1] 3
+
+[[3]]
+[1] 4
+
+[[4]]
+[1] 5
+
+[[5]]
+[1] 6
+
+[[6]]
+[1] 7
+
+[[7]]
+[1] 8
+
+[[8]]
+[1] 9
+
+[[9]]
+[1] 10
+
+[[10]]
+[1] 11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, add_one)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-2" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li><p>Why uses map()?</p>
+<ul>
+<li>B/c many operations don’t work with vectors</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>add_one_scalar <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb25-2"><a></a>  <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">!=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">"Only one number at a time!"</span>)</span>
+<span id="cb25-3"><a></a>  x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb25-4"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>It doesn’t work on vectors</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">add_one_scalar</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in add_one_scalar(1:10): Only one number at a time!</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-3" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>But <code>map()</code> works</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, add_one_scalar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-4" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>A more realistic example: a list of vectors</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a>some_data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb30-2"><a></a> <span class="st">"Group A"</span> <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb30-3"><a></a> <span class="st">"Group B"</span> <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb30-4"><a></a> <span class="st">"Group C"</span> <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb30-5"><a></a>)</span>
+<span id="cb30-6"><a></a></span>
+<span id="cb30-7"><a></a>some_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] -0.3901175 -0.7516687  1.1894436  0.2955950 -0.5227733
+
+$`Group B`
+[1]  0.8254738  0.7300041 -0.3148819 -0.9441314 -0.2647824
+
+$`Group C`
+[1]  0.2754437 -1.1706525 -0.5063522  1.1297897 -1.9233868</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">class</span>(some_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-5" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>A more realistic example: a list of vectors</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">mean</span>(some_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mean.default(some_data): argument is not numeric or logical:
+returning NA</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<ul>
+<li>Why error?</li>
+</ul>
+</section>
+<section id="functions-and-map-6" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>A more realistic example: a list of vectors</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a><span class="fu">map</span>(some_data, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] -0.03590419
+
+$`Group B`
+[1] 0.006336455
+
+$`Group C`
+[1] -0.4390316</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-7" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>Why if you need more flexibility from functions?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>some_data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb39-2"><a></a> <span class="st">"Group A"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">4</span>), <span class="cn">NA</span>),</span>
+<span id="cb39-3"><a></a> <span class="st">"Group B"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">4</span>), <span class="cn">NA</span>),</span>
+<span id="cb39-4"><a></a> <span class="st">"Group C"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">4</span>), <span class="cn">NA</span>)</span>
+<span id="cb39-5"><a></a>)</span>
+<span id="cb39-6"><a></a></span>
+<span id="cb39-7"><a></a><span class="fu">map</span>(some_data, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] NA
+
+$`Group B`
+[1] NA
+
+$`Group C`
+[1] NA</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-8" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>Define a new function that takes care of NAs</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>mean_ignore_na <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) }</span>
+<span id="cb41-2"><a></a></span>
+<span id="cb41-3"><a></a><span class="fu">map</span>(some_data, mean_ignore_na)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] 0.8123263
+
+$`Group B`
+[1] -0.2839768
+
+$`Group C`
+[1] 0.3209036</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-9" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>Or, you can directly write an <em>anonymous function</em></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="fu">map</span>(some_data, <span class="cf">function</span>(x) { <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] 0.8123263
+
+$`Group B`
+[1] -0.2839768
+
+$`Group C`
+[1] 0.3209036</code></pre>
+</div>
+</div>
+</section>
+<section id="functions-and-map-10" class="slide level2">
+<h2>Functions and map()</h2>
+<ul>
+<li>Or, using shorthand <code>~</code> (lambda) and <code>.x</code> (placeholder)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a><span class="fu">map</span>(some_data, <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Group A`
+[1] 0.8123263
+
+$`Group B`
+[1] -0.2839768
+
+$`Group C`
+[1] 0.3209036</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Iris example</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb47-2"><a></a>iris <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(iris)</span>
+<span id="cb47-3"><a></a>iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1         3.5          1.4         0.2 setosa 
+ 2          4.9         3            1.4         0.2 setosa 
+ 3          4.7         3.2          1.3         0.2 setosa 
+ 4          4.6         3.1          1.5         0.2 setosa 
+ 5          5           3.6          1.4         0.2 setosa 
+ 6          5.4         3.9          1.7         0.4 setosa 
+ 7          4.6         3.4          1.4         0.3 setosa 
+ 8          5           3.4          1.5         0.2 setosa 
+ 9          4.4         2.9          1.4         0.2 setosa 
+10          4.9         3.1          1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-1" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Round up one column</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a></a>  <span class="fu">mutate</span>(<span class="at">Sepal.Length =</span> <span class="fu">round</span>(Sepal.Length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5         3.5          1.4         0.2 setosa 
+ 2            5         3            1.4         0.2 setosa 
+ 3            5         3.2          1.3         0.2 setosa 
+ 4            5         3.1          1.5         0.2 setosa 
+ 5            5         3.6          1.4         0.2 setosa 
+ 6            5         3.9          1.7         0.4 setosa 
+ 7            5         3.4          1.4         0.3 setosa 
+ 8            5         3.4          1.5         0.2 setosa 
+ 9            4         2.9          1.4         0.2 setosa 
+10            5         3.1          1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-2" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>How about multiple columns?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a></a>  <span class="fu">mutate</span>(<span class="at">Sepal.Length =</span> <span class="fu">round</span>(Sepal.Length),</span>
+<span id="cb51-3"><a></a>         <span class="at">Sepal.Width =</span> <span class="fu">round</span>(Sepal.Width),</span>
+<span id="cb51-4"><a></a>         <span class="at">Petal.Length =</span> <span class="fu">round</span>(Petal.Length),</span>
+<span id="cb51-5"><a></a>         <span class="at">Petal.Width =</span> <span class="fu">round</span>(Petal.Width))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4            1           0 setosa 
+ 2            5           3            1           0 setosa 
+ 3            5           3            1           0 setosa 
+ 4            5           3            2           0 setosa 
+ 5            5           4            1           0 setosa 
+ 6            5           4            2           0 setosa 
+ 7            5           3            1           0 setosa 
+ 8            5           3            2           0 setosa 
+ 9            4           3            1           0 setosa 
+10            5           3            2           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-3" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Using <code>across()</code> with function</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">c</span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width),</span>
+<span id="cb53-3"><a></a>                <span class="at">.fns =</span> round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4            1           0 setosa 
+ 2            5           3            1           0 setosa 
+ 3            5           3            1           0 setosa 
+ 4            5           3            2           0 setosa 
+ 5            5           4            1           0 setosa 
+ 6            5           4            2           0 setosa 
+ 7            5           3            1           0 setosa 
+ 8            5           3            2           0 setosa 
+ 9            4           3            1           0 setosa 
+10            5           3            2           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-4" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>For simplicity</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb55-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(Sepal.Length<span class="sc">:</span>Petal.Width, round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4            1           0 setosa 
+ 2            5           3            1           0 setosa 
+ 3            5           3            1           0 setosa 
+ 4            5           3            2           0 setosa 
+ 5            5           4            1           0 setosa 
+ 6            5           4            2           0 setosa 
+ 7            5           3            1           0 setosa 
+ 8            5           3            2           0 setosa 
+ 9            4           3            1           0 setosa 
+10            5           3            2           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-5" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Target specific columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb57-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Sepal"</span>), round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4          1.4         0.2 setosa 
+ 2            5           3          1.4         0.2 setosa 
+ 3            5           3          1.3         0.2 setosa 
+ 4            5           3          1.5         0.2 setosa 
+ 5            5           4          1.4         0.2 setosa 
+ 6            5           4          1.7         0.4 setosa 
+ 7            5           3          1.4         0.3 setosa 
+ 8            5           3          1.5         0.2 setosa 
+ 9            4           3          1.4         0.2 setosa 
+10            5           3          1.5         0.1 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-6" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Target specific columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb59-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">"Width"</span>), round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1          5.1           4          1.4           0 setosa 
+ 2          4.9           3          1.4           0 setosa 
+ 3          4.7           3          1.3           0 setosa 
+ 4          4.6           3          1.5           0 setosa 
+ 5          5             4          1.4           0 setosa 
+ 6          5.4           4          1.7           0 setosa 
+ 7          4.6           3          1.4           0 setosa 
+ 8          5             3          1.5           0 setosa 
+ 9          4.4           3          1.4           0 setosa 
+10          4.9           3          1.5           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-7" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Target specific columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb61-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">matches</span>(<span class="st">"Sepal|Petal"</span>), round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4            1           0 setosa 
+ 2            5           3            1           0 setosa 
+ 3            5           3            1           0 setosa 
+ 4            5           3            2           0 setosa 
+ 5            5           4            1           0 setosa 
+ 6            5           4            2           0 setosa 
+ 7            5           3            1           0 setosa 
+ 8            5           3            2           0 setosa 
+ 9            4           3            1           0 setosa 
+10            5           3            2           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-8" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Target specific columns based on <em>another function</em></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb63-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), round))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1            5           4            1           0 setosa 
+ 2            5           3            1           0 setosa 
+ 3            5           3            1           0 setosa 
+ 4            5           3            2           0 setosa 
+ 5            5           4            1           0 setosa 
+ 6            5           4            2           0 setosa 
+ 7            5           3            1           0 setosa 
+ 8            5           3            2           0 setosa 
+ 9            4           3            1           0 setosa 
+10            5           3            2           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-9" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Using anonymous function to further specify arguments</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(.x, <span class="at">digits =</span> <span class="sc">-</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 150 × 5
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+ 1           10           0            0           0 setosa 
+ 2            0           0            0           0 setosa 
+ 3            0           0            0           0 setosa 
+ 4            0           0            0           0 setosa 
+ 5            0           0            0           0 setosa 
+ 6           10           0            0           0 setosa 
+ 7            0           0            0           0 setosa 
+ 8            0           0            0           0 setosa 
+ 9            0           0            0           0 setosa 
+10            0           0            0           0 setosa 
+# ℹ 140 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-10" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>A more realistic example: survey data</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a></a><span class="fu">library</span>(surveydata)</span>
+<span id="cb67-2"><a></a>membersurvey <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(surveydata<span class="sc">::</span>membersurvey)</span>
+<span id="cb67-3"><a></a><span class="fu">glimpse</span>(membersurvey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 215
+Columns: 109
+$ id        &lt;dbl&gt; 3, 5, 6, 11, 13, 15, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31,…
+$ Q1_1      &lt;dbl&gt; 8, 35, 34, 20, 20, 36, 12, 11, 18, 24, 29, 21, 43, 10, 26, 2…
+$ Q1_2      &lt;dbl&gt; 2.0, 12.0, 12.0, 9.0, 3.0, 20.0, 2.5, 0.5, 3.0, 8.0, 14.0, 5…
+$ Q2        &lt;ord&gt; 2009, Before 2002, Before 2002, 2010, 2010, Before 2002, 200…
+$ Q3_1      &lt;fct&gt; No, Yes, Yes, No, No, No, Yes, Yes, Yes, No, Yes, No, Yes, N…
+$ Q3_2      &lt;fct&gt; No, No, Yes, No, No, Yes, No, Yes, Yes, No, Yes, Yes, Yes, Y…
+$ Q3_3      &lt;fct&gt; No, No, No, No, No, No, No, Yes, Yes, No, Yes, Yes, No, No, …
+$ Q3_4      &lt;fct&gt; No, No, No, No, No, No, No, Yes, Yes, Yes, Yes, No, No, No, …
+$ Q3_5      &lt;fct&gt; No, No, No, No, No, No, No, Yes, Yes, Yes, Yes, No, No, Yes,…
+$ Q3_6      &lt;fct&gt; No, No, Yes, No, No, No, Yes, No, Yes, Yes, Yes, No, Yes, No…
+$ Q3_7      &lt;fct&gt; No, No, No, No, No, No, Yes, No, No, No, Yes, No, No, No, No…
+$ Q3_8      &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q3_9      &lt;fct&gt; No, Yes, No, No, No, Yes, No, No, Yes, Yes, No, No, No, No, …
+$ Q3_10     &lt;fct&gt; Yes, No, No, No, No, No, No, No, No, No, No, No, No, No, No,…
+$ Q3_11     &lt;fct&gt; No, No, No, Yes, No, No, No, No, No, No, No, No, No, Yes, No…
+$ Q3_12     &lt;fct&gt; No, Yes, No, No, No, No, No, Yes, Yes, No, Yes, No, Yes, No,…
+$ Q3_13     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q3_14     &lt;fct&gt; No, No, No, No, Yes, No, Yes, Yes, No, No, No, No, No, No, N…
+$ Q3_15     &lt;fct&gt; No, No, No, No, No, No, No, Yes, No, No, No, No, No, No, No,…
+$ Q4        &lt;fct&gt; Field services, Ad hoc qual, Ad hoc qual, Data processing, T…
+$ Q5        &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, Yes, No, Yes, Yes, Yes…
+$ Q6_1      &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, Yes, No, Yes, Yes, Yes…
+$ Q6_2      &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, No, No, No, No, Yes, N…
+$ Q6_3      &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, Yes, No, No, No, Yes, …
+$ Q6_4      &lt;fct&gt; No, Yes, No, No, No, No, No, No, No, Yes, No, No, No, No, No…
+$ Q6_5      &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, Yes, No, No, No, No, N…
+$ Q6_6      &lt;fct&gt; No, No, No, No, No, No, No, No, No, Yes, No, No, No, No, No,…
+$ Q6_7      &lt;fct&gt; No, Yes, No, No, No, No, No, No, No, Yes, No, No, No, No, No…
+$ Q6_8      &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q6_9      &lt;fct&gt; No, Yes, No, No, No, No, No, No, No, No, No, No, No, No, No,…
+$ Q6_10     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q7        &lt;fct&gt; 40-60%, 20-40%, 20-40%, 40-60%, 80-100%, 0-20%, 0-20%, 0-20%…
+$ Q8        &lt;fct&gt; Yes, Yes, No, Yes, Yes, No, Yes, No, Yes, Yes, Yes, Yes, Yes…
+$ Q9_1      &lt;fct&gt; Occasionally, Never, Never, Never, Frequently, Never, Freque…
+$ Q9_2      &lt;fct&gt; Frequently, Occasionally, Never, Occasionally, Frequently, N…
+$ Q9_3      &lt;fct&gt; Never, Never, Never, Never, Occasionally, Never, Frequently,…
+$ Q9_4      &lt;fct&gt; Never, Never, Never, Never, Never, Never, Never, Never, Neve…
+$ Q9_5      &lt;fct&gt; Never, Never, Never, Never, Never, Never, Never, Never, Neve…
+$ Q10       &lt;fct&gt; Yes, Yes, No, Yes, Yes, Yes, No, No, No, No, Yes, No, No, No…
+$ Q11_1     &lt;fct&gt; Yes, Yes, No, Yes, Yes, No, Yes, Yes, No, No, Yes, Yes, No, …
+$ Q11_2     &lt;fct&gt; No, No, No, Yes, No, Yes, Yes, No, No, No, Yes, No, Yes, No,…
+$ Q11_3     &lt;fct&gt; No, No, No, Yes, No, No, No, No, No, No, No, No, No, No, No,…
+$ Q11_4     &lt;fct&gt; No, No, No, Yes, No, Yes, No, No, No, No, Yes, No, Yes, No, …
+$ Q11_5     &lt;fct&gt; No, No, Yes, No, No, No, No, No, Yes, Yes, No, No, No, Yes, …
+$ Q11_other &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q12_1     &lt;fct&gt; Very satisfied, Satisfied, Completely satisfied, Dissatisfie…
+$ Q13_1     &lt;fct&gt; Satisfied, Very satisfied, Very satisfied, Satisfied, Neutra…
+$ Q13_2     &lt;fct&gt; Very satisfied, Completely satisfied, Completely satisfied, …
+$ Q13_3     &lt;fct&gt; Neutral, Very satisfied, Very satisfied, Neutral, Satisfied,…
+$ Q13_4     &lt;fct&gt; Neutral, Satisfied, Neutral, Neutral, Neutral, Neutral, Neut…
+$ Q14_1     &lt;fct&gt; Neutral, Satisfied, Neutral, Neutral, Satisfied, Neutral, Sa…
+$ Q14_2     &lt;fct&gt; Very satisfied, Very satisfied, Very satisfied, Neutral, Ver…
+$ Q14_3     &lt;fct&gt; Satisfied, Very satisfied, Very satisfied, Neutral, Neutral,…
+$ Q14_4     &lt;fct&gt; Neutral, Neutral, Neutral, Dissatisfied, Dissatisfied, Neutr…
+$ Q14_5     &lt;fct&gt; Very satisfied, Completely satisfied, Very satisfied, Neutra…
+$ Q14_6     &lt;fct&gt; Very satisfied, Very satisfied, Neutral, Neutral, Satisfied,…
+$ Q14_7     &lt;fct&gt; Satisfied, Neutral, Neutral, Neutral, Neutral, Neutral, Neut…
+$ Q14_8     &lt;fct&gt; Satisfied, Very satisfied, Very satisfied, Neutral, Neutral,…
+$ Q14_9     &lt;fct&gt; Satisfied, Very satisfied, Neutral, Neutral, Satisfied, Sati…
+$ Q14_10    &lt;fct&gt; Satisfied, Very satisfied, Very satisfied, Neutral, Neutral,…
+$ Q15_1     &lt;fct&gt; "Support via the e-group", "Support via the e-group", "Suppo…
+$ Q15_2     &lt;fct&gt; "Opportunities for new business", "Events for networking, so…
+$ Q15_3     &lt;fct&gt; "Opportunities for individual promotion", "Promotion of smal…
+$ Q15_4     &lt;fct&gt; "Online resources ( website)", NA, "Promotion of smaller MR …
+$ Q15_5     &lt;fct&gt; "Promotion of smaller MR consultant sector", NA, "Opportunit…
+$ Q15_6     &lt;fct&gt; "Events for networking, socialising and learning", NA, "Oppo…
+$ Q19_1     &lt;fct&gt; Rarely, Never, Never, Rarely, Never, Never, Never, Never, Ne…
+$ Q19_2     &lt;fct&gt; Never, Occasionally, Rarely, Never, Never, Never, Never, Nev…
+$ Q19_3     &lt;fct&gt; Never, Rarely, Never, Never, Never, Never, Occasionally, Nev…
+$ Q19_4     &lt;fct&gt; Occasionally, Often / Always, Often / Always, Rarely, Occasi…
+$ Q19_5     &lt;fct&gt; Often / Always, Occasionally, Occasionally, Rarely, Occasion…
+$ Q19_6     &lt;fct&gt; Often / Always, Occasionally, Occasionally, Never, Occasiona…
+$ Q20_1     &lt;fct&gt; Yes, No, No, Yes, No, No, No, Yes, No, No, Yes, No, No, No, …
+$ Q20_2     &lt;fct&gt; No, No, No, Yes, No, Yes, No, No, No, No, Yes, No, No, No, Y…
+$ Q20_3     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q20_4     &lt;fct&gt; No, No, No, No, No, Yes, No, No, No, No, Yes, Yes, No, No, N…
+$ Q20_5     &lt;fct&gt; No, No, No, No, No, Yes, No, No, No, No, No, No, No, No, No,…
+$ Q20_6     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, Yes, No, No, No, No,…
+$ Q20_7     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q20_8     &lt;fct&gt; No, No, No, No, No, No, No, Yes, No, No, Yes, No, No, Yes, N…
+$ Q20_9     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q20_10    &lt;fct&gt; No, No, No, Yes, No, No, No, No, No, No, No, No, No, No, No,…
+$ Q20_other &lt;fct&gt; NA, NA, NA, NA, "I rarely attend business events in the even…
+$ Q21_1     &lt;fct&gt; 2, 5 - Highly interested, 3 - Neutral / Not sure, 1 - Comple…
+$ Q21_2     &lt;fct&gt; 4, 5 - Highly interested, 4, 1 - Completely uninterested, 2,…
+$ Q21_3     &lt;fct&gt; 3 - Neutral / Not sure, 3 - Neutral / Not sure, 4, 1 - Compl…
+$ Q21_4     &lt;fct&gt; 5 - Highly interested, 4, 1 - Completely uninterested, 1 - C…
+$ Q21_5     &lt;fct&gt; 5 - Highly interested, 4, 1 - Completely uninterested, 1 - C…
+$ Q21_6     &lt;fct&gt; 3 - Neutral / Not sure, 4, 3 - Neutral / Not sure, 3 - Neutr…
+$ Q23_1     &lt;fct&gt; No, No, Yes, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, No, Yes,…
+$ Q23_2     &lt;fct&gt; Yes, Yes, No, No, No, No, No, No, No, No, No, No, No, No, Ye…
+$ Q23_3     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, …
+$ Q23_4     &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, Yes, No, No,…
+$ Q23_5     &lt;fct&gt; No, No, No, No, No, No, Yes, No, No, No, No, Yes, No, Yes, N…
+$ Q23_other &lt;fct&gt; NA, "qrca", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q24       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q25       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q26_1     &lt;ord&gt; 21-49, 6-10, 6-10, 6-10, 21-49, 1-5, 6-10, NA, 6-10, 11-20, …
+$ Q27_1     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q27_2     &lt;dbl&gt; 1000, 700, 400, 300, NA, 450, 400, 200, 350, NA, 300, 350, 4…
+$ Q30       &lt;fct&gt; Fieldwork, Consultancy, Consultancy, Data analysis, NA, Cons…
+$ Q30_other &lt;fct&gt; NA, NA, NA, NA, Coach/Trainer, NA, NA, NA, NA, NA, NA, NA, N…
+$ Q31       &lt;fct&gt; Sole trader, Limited company, Sole trader, Limited company, …
+$ Q31_other &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Q32       &lt;ord&gt; Part-time (20-34 hours a week), Full-time (35 or more hours …
+$ Q33       &lt;fct&gt; UK - Greater London, UK - Midlands / East of England / Wales…
+$ Q35       &lt;fct&gt; Male, Female, Female, Female, Male, Male, Male, Female, Fema…
+$ weight    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ size      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-11" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Converting text to binary values</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a></a>  <span class="fu">mutate</span>(<span class="at">Q3_1 =</span> <span class="fu">if_else</span>(Q3_1 <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 215 × 109
+      id  Q1_1  Q1_2 Q2     Q3_1 Q3_2  Q3_3  Q3_4  Q3_5  Q3_6  Q3_7  Q3_8  Q3_9 
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;ord&gt; &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
+ 1     3     8   2   2009      0 No    No    No    No    No    No    No    No   
+ 2     5    35  12   Befo…     1 No    No    No    No    No    No    No    Yes  
+ 3     6    34  12   Befo…     1 Yes   No    No    No    Yes   No    No    No   
+ 4    11    20   9   2010      0 No    No    No    No    No    No    No    No   
+ 5    13    20   3   2010      0 No    No    No    No    No    No    No    No   
+ 6    15    36  20   Befo…     0 Yes   No    No    No    No    No    No    Yes  
+ 7    21    12   2.5 2009      1 No    No    No    No    Yes   Yes   No    No   
+ 8    22    11   0.5 2011      1 Yes   Yes   Yes   Yes   No    No    No    No   
+ 9    23    18   3   2008      1 Yes   Yes   Yes   Yes   Yes   No    No    Yes  
+10    25    24   8   2006      0 No    No    Yes   Yes   Yes   No    No    Yes  
+# ℹ 205 more rows
+# ℹ 96 more variables: Q3_10 &lt;fct&gt;, Q3_11 &lt;fct&gt;, Q3_12 &lt;fct&gt;, Q3_13 &lt;fct&gt;,
+#   Q3_14 &lt;fct&gt;, Q3_15 &lt;fct&gt;, Q4 &lt;fct&gt;, Q5 &lt;fct&gt;, Q6_1 &lt;fct&gt;, Q6_2 &lt;fct&gt;,
+#   Q6_3 &lt;fct&gt;, Q6_4 &lt;fct&gt;, Q6_5 &lt;fct&gt;, Q6_6 &lt;fct&gt;, Q6_7 &lt;fct&gt;, Q6_8 &lt;fct&gt;,
+#   Q6_9 &lt;fct&gt;, Q6_10 &lt;fct&gt;, Q7 &lt;fct&gt;, Q8 &lt;fct&gt;, Q9_1 &lt;fct&gt;, Q9_2 &lt;fct&gt;,
+#   Q9_3 &lt;fct&gt;, Q9_4 &lt;fct&gt;, Q9_5 &lt;fct&gt;, Q10 &lt;fct&gt;, Q11_1 &lt;fct&gt;, Q11_2 &lt;fct&gt;,
+#   Q11_3 &lt;fct&gt;, Q11_4 &lt;fct&gt;, Q11_5 &lt;fct&gt;, Q11_other &lt;fct&gt;, Q12_1 &lt;fct&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-12" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Converting all Q3_* columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb71-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q3_"</span>), <span class="sc">~</span> <span class="fu">if_else</span>(.x <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 215 × 109
+      id  Q1_1  Q1_2 Q2     Q3_1  Q3_2  Q3_3  Q3_4  Q3_5  Q3_6  Q3_7  Q3_8  Q3_9
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;ord&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     3     8   2   2009      0     0     0     0     0     0     0     0     0
+ 2     5    35  12   Befo…     1     0     0     0     0     0     0     0     1
+ 3     6    34  12   Befo…     1     1     0     0     0     1     0     0     0
+ 4    11    20   9   2010      0     0     0     0     0     0     0     0     0
+ 5    13    20   3   2010      0     0     0     0     0     0     0     0     0
+ 6    15    36  20   Befo…     0     1     0     0     0     0     0     0     1
+ 7    21    12   2.5 2009      1     0     0     0     0     1     1     0     0
+ 8    22    11   0.5 2011      1     1     1     1     1     0     0     0     0
+ 9    23    18   3   2008      1     1     1     1     1     1     0     0     1
+10    25    24   8   2006      0     0     0     1     1     1     0     0     1
+# ℹ 205 more rows
+# ℹ 96 more variables: Q3_10 &lt;dbl&gt;, Q3_11 &lt;dbl&gt;, Q3_12 &lt;dbl&gt;, Q3_13 &lt;dbl&gt;,
+#   Q3_14 &lt;dbl&gt;, Q3_15 &lt;dbl&gt;, Q4 &lt;fct&gt;, Q5 &lt;fct&gt;, Q6_1 &lt;fct&gt;, Q6_2 &lt;fct&gt;,
+#   Q6_3 &lt;fct&gt;, Q6_4 &lt;fct&gt;, Q6_5 &lt;fct&gt;, Q6_6 &lt;fct&gt;, Q6_7 &lt;fct&gt;, Q6_8 &lt;fct&gt;,
+#   Q6_9 &lt;fct&gt;, Q6_10 &lt;fct&gt;, Q7 &lt;fct&gt;, Q8 &lt;fct&gt;, Q9_1 &lt;fct&gt;, Q9_2 &lt;fct&gt;,
+#   Q9_3 &lt;fct&gt;, Q9_4 &lt;fct&gt;, Q9_5 &lt;fct&gt;, Q10 &lt;fct&gt;, Q11_1 &lt;fct&gt;, Q11_2 &lt;fct&gt;,
+#   Q11_3 &lt;fct&gt;, Q11_4 &lt;fct&gt;, Q11_5 &lt;fct&gt;, Q11_other &lt;fct&gt;, Q12_1 &lt;fct&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-13" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Q13_* columns are coded in Likert scale values in text</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb73-2"><a></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Q13_1                Q13_2                Q13_3
+1              Satisfied       Very satisfied              Neutral
+2         Very satisfied Completely satisfied       Very satisfied
+3         Very satisfied Completely satisfied       Very satisfied
+4              Satisfied         Dissatisfied              Neutral
+5                Neutral         Dissatisfied            Satisfied
+6              Satisfied            Satisfied              Neutral
+7              Satisfied       Very satisfied Completely satisfied
+8              Satisfied              Neutral              Neutral
+9         Very satisfied Completely satisfied              Neutral
+10             Satisfied Completely satisfied            Satisfied
+11        Very satisfied            Satisfied       Very satisfied
+12             Satisfied       Very satisfied            Satisfied
+13        Very satisfied       Very satisfied            Satisfied
+14             Satisfied            Satisfied              Neutral
+15             Satisfied       Very satisfied       Very satisfied
+16             Satisfied       Very satisfied              Neutral
+17             Satisfied Completely satisfied       Very satisfied
+18               Neutral            Satisfied              Neutral
+19               Neutral Completely satisfied       Very satisfied
+20               Neutral            Satisfied              Neutral
+21             Satisfied Completely satisfied            Satisfied
+22             Satisfied            Satisfied              Neutral
+23             Satisfied       Very satisfied            Satisfied
+24        Very satisfied       Very satisfied              Neutral
+25               Neutral            Satisfied              Neutral
+26             Satisfied            Satisfied              Neutral
+27        Very satisfied       Very satisfied       Very satisfied
+28             Satisfied       Very satisfied            Satisfied
+29             Satisfied       Very satisfied         Dissatisfied
+30             Satisfied       Very satisfied            Satisfied
+31               Neutral              Neutral              Neutral
+32             Satisfied       Very satisfied            Satisfied
+33        Very satisfied       Very satisfied              Neutral
+34        Very satisfied       Very satisfied       Very satisfied
+35               Neutral       Very satisfied       Very satisfied
+36        Very satisfied Completely satisfied Completely satisfied
+37               Neutral              Neutral              Neutral
+38        Very satisfied Completely satisfied       Very satisfied
+39             Satisfied       Very satisfied            Satisfied
+40        Very satisfied Completely satisfied       Very satisfied
+41             Satisfied       Very satisfied            Satisfied
+42               Neutral       Very satisfied              Neutral
+43             Satisfied       Very satisfied            Satisfied
+44        Very satisfied Completely satisfied       Very satisfied
+45        Very satisfied       Very satisfied              Neutral
+46  Completely satisfied Completely satisfied Completely satisfied
+47        Very satisfied         Dissatisfied              Neutral
+48             Satisfied            Satisfied              Neutral
+49             Satisfied         Dissatisfied       Very satisfied
+50        Very satisfied              Neutral       Very satisfied
+51               Neutral            Satisfied              Neutral
+52             Satisfied       Very satisfied            Satisfied
+53             Satisfied       Very satisfied            Satisfied
+54               Neutral Completely satisfied            Satisfied
+55        Very satisfied Completely satisfied       Very satisfied
+56               Neutral              Neutral              Neutral
+57  Completely satisfied Completely satisfied       Very satisfied
+58        Very satisfied       Very satisfied            Satisfied
+59               Neutral       Very satisfied            Satisfied
+60             Satisfied            Satisfied       Very satisfied
+61             Satisfied       Very satisfied            Satisfied
+62             Satisfied       Very satisfied            Satisfied
+63               Neutral         Dissatisfied         Dissatisfied
+64             Satisfied       Very satisfied              Neutral
+65               Neutral              Neutral              Neutral
+66  Completely satisfied Completely satisfied Completely satisfied
+67        Very satisfied Completely satisfied            Satisfied
+68             Satisfied       Very satisfied            Satisfied
+69               Neutral Completely satisfied              Neutral
+70             Satisfied       Very satisfied            Satisfied
+71             Satisfied            Satisfied            Satisfied
+72               Neutral            Satisfied              Neutral
+73        Very satisfied Completely satisfied              Neutral
+74             Satisfied            Satisfied              Neutral
+75          Dissatisfied              Neutral         Dissatisfied
+76               Neutral            Satisfied            Satisfied
+77               Neutral       Very satisfied            Satisfied
+78               Neutral Completely satisfied              Neutral
+79             Satisfied            Satisfied            Satisfied
+80               Neutral            Satisfied              Neutral
+81        Very satisfied       Very satisfied       Very satisfied
+82             Satisfied Completely satisfied              Neutral
+83        Very satisfied Completely satisfied            Satisfied
+84             Satisfied       Very satisfied       Very satisfied
+85             Satisfied Completely satisfied            Satisfied
+86        Very satisfied Completely satisfied            Satisfied
+87             Satisfied Completely satisfied            Satisfied
+88               Neutral            Satisfied              Neutral
+89             Satisfied       Very satisfied            Satisfied
+90             Satisfied       Very satisfied            Satisfied
+91        Very satisfied       Very satisfied       Very satisfied
+92               Neutral       Very satisfied              Neutral
+93             Satisfied Completely satisfied       Very satisfied
+94             Satisfied            Satisfied              Neutral
+95               Neutral       Very satisfied              Neutral
+96        Very satisfied            Satisfied              Neutral
+97             Satisfied            Satisfied            Satisfied
+98             Satisfied       Very satisfied            Satisfied
+99               Neutral            Satisfied              Neutral
+100              Neutral Completely satisfied              Neutral
+101       Very satisfied Completely satisfied       Very satisfied
+102            Satisfied Completely satisfied              Neutral
+103       Very satisfied            Satisfied       Very satisfied
+104              Neutral       Very satisfied              Neutral
+105            Satisfied       Very satisfied            Satisfied
+106            Satisfied       Very satisfied            Satisfied
+107              Neutral       Very satisfied              Neutral
+108            Satisfied Completely satisfied              Neutral
+109              Neutral       Very satisfied              Neutral
+110       Very satisfied Completely satisfied       Very satisfied
+111            Satisfied       Very satisfied       Very satisfied
+112            Satisfied            Satisfied            Satisfied
+113              Neutral       Very satisfied            Satisfied
+114 Completely satisfied       Very satisfied              Neutral
+115              Neutral       Very satisfied              Neutral
+116            Satisfied Completely satisfied            Satisfied
+117            Satisfied       Very satisfied            Satisfied
+118         Dissatisfied       Very satisfied              Neutral
+119              Neutral            Satisfied              Neutral
+120              Neutral              Neutral              Neutral
+121            Satisfied       Very satisfied            Satisfied
+122            Satisfied       Very satisfied    Very dissatisfied
+123              Neutral Completely satisfied              Neutral
+124              Neutral       Very satisfied            Satisfied
+125              Neutral       Very satisfied            Satisfied
+126       Very satisfied       Very satisfied       Very satisfied
+127            Satisfied Completely satisfied              Neutral
+128              Neutral       Very satisfied       Very satisfied
+129              Neutral              Neutral              Neutral
+130            Satisfied       Very satisfied            Satisfied
+131            Satisfied       Very satisfied            Satisfied
+132            Satisfied       Very satisfied            Satisfied
+133            Satisfied            Satisfied              Neutral
+134       Very satisfied Completely satisfied       Very satisfied
+135         Dissatisfied            Satisfied    Very dissatisfied
+136       Very satisfied Completely satisfied            Satisfied
+137            Satisfied       Very satisfied              Neutral
+138 Completely satisfied Completely satisfied       Very satisfied
+139              Neutral              Neutral              Neutral
+140            Satisfied       Very satisfied              Neutral
+141         Dissatisfied            Satisfied              Neutral
+142 Completely satisfied Completely satisfied       Very satisfied
+143              Neutral              Neutral            Satisfied
+144              Neutral              Neutral              Neutral
+145            Satisfied            Satisfied              Neutral
+146            Satisfied Completely satisfied       Very satisfied
+147            Satisfied       Very satisfied              Neutral
+148         Dissatisfied       Very satisfied              Neutral
+149       Very satisfied       Very satisfied       Very satisfied
+150            Satisfied              Neutral            Satisfied
+151            Satisfied            Satisfied              Neutral
+152            Satisfied            Satisfied              Neutral
+153            Satisfied       Very satisfied              Neutral
+154    Very dissatisfied            Satisfied              Neutral
+155       Very satisfied            Satisfied              Neutral
+156         Dissatisfied            Satisfied              Neutral
+157              Neutral            Satisfied              Neutral
+158       Very satisfied         Dissatisfied              Neutral
+159            Satisfied       Very satisfied            Satisfied
+160              Neutral Completely satisfied              Neutral
+161            Satisfied       Very satisfied              Neutral
+162            Satisfied Completely satisfied              Neutral
+163              Neutral            Satisfied       Very satisfied
+164            Satisfied            Satisfied              Neutral
+165            Satisfied       Very satisfied              Neutral
+166       Very satisfied       Very satisfied       Very satisfied
+167              Neutral       Very satisfied              Neutral
+168       Very satisfied            Satisfied            Satisfied
+169       Very satisfied Completely satisfied       Very satisfied
+170            Satisfied            Satisfied            Satisfied
+171         Dissatisfied            Satisfied              Neutral
+172            Satisfied       Very satisfied              Neutral
+173       Very satisfied       Very satisfied       Very satisfied
+174              Neutral            Satisfied              Neutral
+175            Satisfied            Satisfied              Neutral
+176            Satisfied Completely satisfied            Satisfied
+177            Satisfied            Satisfied       Very satisfied
+178       Very satisfied       Very satisfied            Satisfied
+179       Very satisfied       Very satisfied            Satisfied
+180       Very satisfied       Very satisfied              Neutral
+181              Neutral       Very satisfied            Satisfied
+182 Completely satisfied Completely satisfied Completely satisfied
+183              Neutral            Satisfied              Neutral
+184            Satisfied       Very satisfied            Satisfied
+185            Satisfied       Very satisfied            Satisfied
+186            Satisfied       Very satisfied            Satisfied
+187       Very satisfied       Very satisfied       Very satisfied
+188            Satisfied       Very satisfied              Neutral
+189              Neutral       Very satisfied              Neutral
+190            Satisfied            Satisfied              Neutral
+191         Dissatisfied       Very satisfied              Neutral
+192            Satisfied Completely satisfied            Satisfied
+193            Satisfied       Very satisfied            Satisfied
+194       Very satisfied       Very satisfied       Very satisfied
+195            Satisfied       Very satisfied            Satisfied
+196            Satisfied         Dissatisfied            Satisfied
+197       Very satisfied       Very satisfied       Very satisfied
+198              Neutral       Very satisfied              Neutral
+199            Satisfied       Very satisfied            Satisfied
+200       Very satisfied         Dissatisfied       Very satisfied
+201            Satisfied            Satisfied            Satisfied
+202 Completely satisfied Completely satisfied Completely satisfied
+203            Satisfied            Satisfied              Neutral
+204         Dissatisfied            Satisfied              Neutral
+205            Satisfied       Very satisfied              Neutral
+206       Very satisfied       Very satisfied            Satisfied
+207              Neutral            Satisfied              Neutral
+208              Neutral         Dissatisfied              Neutral
+209       Very satisfied       Very satisfied       Very satisfied
+210       Very satisfied       Very satisfied       Very satisfied
+211              Neutral            Satisfied              Neutral
+212            Satisfied            Satisfied            Satisfied
+213            Satisfied            Satisfied            Satisfied
+214            Satisfied            Satisfied            Satisfied
+215              Neutral       Very satisfied              Neutral
+                   Q13_4
+1                Neutral
+2              Satisfied
+3                Neutral
+4                Neutral
+5                Neutral
+6                Neutral
+7                Neutral
+8                Neutral
+9   Completely satisfied
+10             Satisfied
+11             Satisfied
+12               Neutral
+13             Satisfied
+14               Neutral
+15               Neutral
+16     Very dissatisfied
+17        Very satisfied
+18               Neutral
+19  Completely satisfied
+20             Satisfied
+21             Satisfied
+22               Neutral
+23          Dissatisfied
+24               Neutral
+25               Neutral
+26               Neutral
+27               Neutral
+28             Satisfied
+29             Satisfied
+30        Very satisfied
+31               Neutral
+32          Dissatisfied
+33             Satisfied
+34        Very satisfied
+35        Very satisfied
+36             Satisfied
+37               Neutral
+38             Satisfied
+39               Neutral
+40        Very satisfied
+41             Satisfied
+42               Neutral
+43               Neutral
+44        Very satisfied
+45               Neutral
+46  Completely satisfied
+47               Neutral
+48               Neutral
+49               Neutral
+50               Neutral
+51               Neutral
+52               Neutral
+53               Neutral
+54             Satisfied
+55               Neutral
+56               Neutral
+57        Very satisfied
+58             Satisfied
+59               Neutral
+60        Very satisfied
+61               Neutral
+62             Satisfied
+63             Satisfied
+64               Neutral
+65               Neutral
+66             Satisfied
+67        Very satisfied
+68             Satisfied
+69             Satisfied
+70               Neutral
+71               Neutral
+72               Neutral
+73        Very satisfied
+74             Satisfied
+75             Satisfied
+76               Neutral
+77               Neutral
+78          Dissatisfied
+79             Satisfied
+80               Neutral
+81        Very satisfied
+82               Neutral
+83        Very satisfied
+84        Very satisfied
+85               Neutral
+86               Neutral
+87        Very satisfied
+88          Dissatisfied
+89               Neutral
+90        Very satisfied
+91               Neutral
+92               Neutral
+93        Very satisfied
+94               Neutral
+95               Neutral
+96               Neutral
+97               Neutral
+98               Neutral
+99               Neutral
+100            Satisfied
+101            Satisfied
+102         Dissatisfied
+103         Dissatisfied
+104            Satisfied
+105            Satisfied
+106            Satisfied
+107            Satisfied
+108              Neutral
+109            Satisfied
+110       Very satisfied
+111            Satisfied
+112            Satisfied
+113            Satisfied
+114              Neutral
+115              Neutral
+116              Neutral
+117            Satisfied
+118              Neutral
+119            Satisfied
+120              Neutral
+121            Satisfied
+122       Very satisfied
+123              Neutral
+124              Neutral
+125            Satisfied
+126            Satisfied
+127            Satisfied
+128         Dissatisfied
+129              Neutral
+130            Satisfied
+131              Neutral
+132            Satisfied
+133       Very satisfied
+134            Satisfied
+135            Satisfied
+136              Neutral
+137              Neutral
+138              Neutral
+139            Satisfied
+140              Neutral
+141              Neutral
+142       Very satisfied
+143            Satisfied
+144              Neutral
+145              Neutral
+146            Satisfied
+147              Neutral
+148         Dissatisfied
+149       Very satisfied
+150              Neutral
+151              Neutral
+152         Dissatisfied
+153              Neutral
+154         Dissatisfied
+155              Neutral
+156              Neutral
+157            Satisfied
+158              Neutral
+159            Satisfied
+160            Satisfied
+161              Neutral
+162            Satisfied
+163       Very satisfied
+164              Neutral
+165         Dissatisfied
+166       Very satisfied
+167              Neutral
+168            Satisfied
+169            Satisfied
+170            Satisfied
+171              Neutral
+172              Neutral
+173       Very satisfied
+174              Neutral
+175            Satisfied
+176            Satisfied
+177            Satisfied
+178       Very satisfied
+179            Satisfied
+180            Satisfied
+181              Neutral
+182            Satisfied
+183              Neutral
+184            Satisfied
+185       Very satisfied
+186              Neutral
+187       Very satisfied
+188              Neutral
+189              Neutral
+190              Neutral
+191            Satisfied
+192              Neutral
+193              Neutral
+194              Neutral
+195              Neutral
+196            Satisfied
+197              Neutral
+198              Neutral
+199            Satisfied
+200            Satisfied
+201            Satisfied
+202            Satisfied
+203              Neutral
+204              Neutral
+205            Satisfied
+206              Neutral
+207            Satisfied
+208              Neutral
+209       Very satisfied
+210       Very satisfied
+211              Neutral
+212              Neutral
+213            Satisfied
+214            Satisfied
+215         Dissatisfied</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-14" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Manually recode all columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb75-2"><a></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb75-3"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb75-4"><a></a>    <span class="at">Q13_1 =</span>  <span class="fu">case_when</span>(</span>
+<span id="cb75-5"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Completely dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb75-6"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Very dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb75-7"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb75-8"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb75-9"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Satisfied"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb75-10"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Very satisfied"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb75-11"><a></a>      Q13_1 <span class="sc">==</span> <span class="st">"Completely satisfied"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb75-12"><a></a>    ),</span>
+<span id="cb75-13"><a></a>    <span class="at">Q13_2 =</span>  <span class="fu">case_when</span>(</span>
+<span id="cb75-14"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Completely dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb75-15"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Very dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb75-16"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb75-17"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb75-18"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Satisfied"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb75-19"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Very satisfied"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb75-20"><a></a>      Q13_2 <span class="sc">==</span> <span class="st">"Completely satisfied"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb75-21"><a></a>    ),</span>
+<span id="cb75-22"><a></a>    <span class="at">Q13_3 =</span>  <span class="fu">case_when</span>(</span>
+<span id="cb75-23"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Completely dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb75-24"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Very dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb75-25"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb75-26"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb75-27"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Satisfied"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb75-28"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Very satisfied"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb75-29"><a></a>      Q13_3 <span class="sc">==</span> <span class="st">"Completely satisfied"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb75-30"><a></a>    ),</span>
+<span id="cb75-31"><a></a>    <span class="at">Q13_4 =</span>  <span class="fu">case_when</span>(</span>
+<span id="cb75-32"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Completely dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb75-33"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Very dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb75-34"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb75-35"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb75-36"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Satisfied"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb75-37"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Very satisfied"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb75-38"><a></a>      Q13_4 <span class="sc">==</span> <span class="st">"Completely satisfied"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb75-39"><a></a>    )</span>
+<span id="cb75-40"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>Output</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Q13_1 Q13_2 Q13_3 Q13_4
+1       1     2     0     0
+2       2     3     2     1
+3       2     3     2     0
+4       1    -1     0     0
+5       0    -1     1     0
+6       1     1     0     0
+7       1     2     3     0
+8       1     0     0     0
+9       2     3     0     3
+10      1     3     1     1
+11      2     1     2     1
+12      1     2     1     0
+13      2     2     1     1
+14      1     1     0     0
+15      1     2     2     0
+16      1     2     0    -2
+17      1     3     2     2
+18      0     1     0     0
+19      0     3     2     3
+20      0     1     0     1
+21      1     3     1     1
+22      1     1     0     0
+23      1     2     1    -1
+24      2     2     0     0
+25      0     1     0     0
+26      1     1     0     0
+27      2     2     2     0
+28      1     2     1     1
+29      1     2    -1     1
+30      1     2     1     2
+31      0     0     0     0
+32      1     2     1    -1
+33      2     2     0     1
+34      2     2     2     2
+35      0     2     2     2
+36      2     3     3     1
+37      0     0     0     0
+38      2     3     2     1
+39      1     2     1     0
+40      2     3     2     2
+41      1     2     1     1
+42      0     2     0     0
+43      1     2     1     0
+44      2     3     2     2
+45      2     2     0     0
+46      3     3     3     3
+47      2    -1     0     0
+48      1     1     0     0
+49      1    -1     2     0
+50      2     0     2     0
+51      0     1     0     0
+52      1     2     1     0
+53      1     2     1     0
+54      0     3     1     1
+55      2     3     2     0
+56      0     0     0     0
+57      3     3     2     2
+58      2     2     1     1
+59      0     2     1     0
+60      1     1     2     2
+61      1     2     1     0
+62      1     2     1     1
+63      0    -1    -1     1
+64      1     2     0     0
+65      0     0     0     0
+66      3     3     3     1
+67      2     3     1     2
+68      1     2     1     1
+69      0     3     0     1
+70      1     2     1     0
+71      1     1     1     0
+72      0     1     0     0
+73      2     3     0     2
+74      1     1     0     1
+75     -1     0    -1     1
+76      0     1     1     0
+77      0     2     1     0
+78      0     3     0    -1
+79      1     1     1     1
+80      0     1     0     0
+81      2     2     2     2
+82      1     3     0     0
+83      2     3     1     2
+84      1     2     2     2
+85      1     3     1     0
+86      2     3     1     0
+87      1     3     1     2
+88      0     1     0    -1
+89      1     2     1     0
+90      1     2     1     2
+91      2     2     2     0
+92      0     2     0     0
+93      1     3     2     2
+94      1     1     0     0
+95      0     2     0     0
+96      2     1     0     0
+97      1     1     1     0
+98      1     2     1     0
+99      0     1     0     0
+100     0     3     0     1
+101     2     3     2     1
+102     1     3     0    -1
+103     2     1     2    -1
+104     0     2     0     1
+105     1     2     1     1
+106     1     2     1     1
+107     0     2     0     1
+108     1     3     0     0
+109     0     2     0     1
+110     2     3     2     2
+111     1     2     2     1
+112     1     1     1     1
+113     0     2     1     1
+114     3     2     0     0
+115     0     2     0     0
+116     1     3     1     0
+117     1     2     1     1
+118    -1     2     0     0
+119     0     1     0     1
+120     0     0     0     0
+121     1     2     1     1
+122     1     2    -2     2
+123     0     3     0     0
+124     0     2     1     0
+125     0     2     1     1
+126     2     2     2     1
+127     1     3     0     1
+128     0     2     2    -1
+129     0     0     0     0
+130     1     2     1     1
+131     1     2     1     0
+132     1     2     1     1
+133     1     1     0     2
+134     2     3     2     1
+135    -1     1    -2     1
+136     2     3     1     0
+137     1     2     0     0
+138     3     3     2     0
+139     0     0     0     1
+140     1     2     0     0
+141    -1     1     0     0
+142     3     3     2     2
+143     0     0     1     1
+144     0     0     0     0
+145     1     1     0     0
+146     1     3     2     1
+147     1     2     0     0
+148    -1     2     0    -1
+149     2     2     2     2
+150     1     0     1     0
+151     1     1     0     0
+152     1     1     0    -1
+153     1     2     0     0
+154    -2     1     0    -1
+155     2     1     0     0
+156    -1     1     0     0
+157     0     1     0     1
+158     2    -1     0     0
+159     1     2     1     1
+160     0     3     0     1
+161     1     2     0     0
+162     1     3     0     1
+163     0     1     2     2
+164     1     1     0     0
+165     1     2     0    -1
+166     2     2     2     2
+167     0     2     0     0
+168     2     1     1     1
+169     2     3     2     1
+170     1     1     1     1
+171    -1     1     0     0
+172     1     2     0     0
+173     2     2     2     2
+174     0     1     0     0
+175     1     1     0     1
+176     1     3     1     1
+177     1     1     2     1
+178     2     2     1     2
+179     2     2     1     1
+180     2     2     0     1
+181     0     2     1     0
+182     3     3     3     1
+183     0     1     0     0
+184     1     2     1     1
+185     1     2     1     2
+186     1     2     1     0
+187     2     2     2     2
+188     1     2     0     0
+189     0     2     0     0
+190     1     1     0     0
+191    -1     2     0     1
+192     1     3     1     0
+193     1     2     1     0
+194     2     2     2     0
+195     1     2     1     0
+196     1    -1     1     1
+197     2     2     2     0
+198     0     2     0     0
+199     1     2     1     1
+200     2    -1     2     1
+201     1     1     1     1
+202     3     3     3     1
+203     1     1     0     0
+204    -1     1     0     0
+205     1     2     0     1
+206     2     2     1     0
+207     0     1     0     1
+208     0    -1     0     0
+209     2     2     2     2
+210     2     2     2     2
+211     0     1     0     0
+212     1     1     1     0
+213     1     1     1     1
+214     1     1     1     1
+215     0     2     0    -1</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="wrangling-multiple-columns-15" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Functional approach: write a simple function!</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a></a>convert_text_to_num <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb77-2"><a></a>  <span class="fu">case_when</span>(</span>
+<span id="cb77-3"><a></a>    x <span class="sc">==</span> <span class="st">"Completely dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">3</span>,</span>
+<span id="cb77-4"><a></a>    x <span class="sc">==</span> <span class="st">"Very dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb77-5"><a></a>    x <span class="sc">==</span> <span class="st">"Dissatisfied"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb77-6"><a></a>    x <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb77-7"><a></a>    x <span class="sc">==</span> <span class="st">"Satisfied"</span> <span class="sc">~</span> <span class="dv">1</span>,               </span>
+<span id="cb77-8"><a></a>    x <span class="sc">==</span> <span class="st">"Very satisfied"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb77-9"><a></a>    x <span class="sc">==</span> <span class="st">"Completely satisfied"</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb77-10"><a></a>  )</span>
+<span id="cb77-11"><a></a>}</span>
+<span id="cb77-12"><a></a></span>
+<span id="cb77-13"><a></a><span class="fu">convert_text_to_num</span>(<span class="st">"Dissatisfied"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a><span class="fu">convert_text_to_num</span>(<span class="st">"Satisfied"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-16" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li>Functional approach: apply the function across columns</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb81-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>), convert_text_to_num)) <span class="sc">%&gt;%</span></span>
+<span id="cb81-3"><a></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Q13_1 Q13_2 Q13_3 Q13_4
+1       1     2     0     0
+2       2     3     2     1
+3       2     3     2     0
+4       1    -1     0     0
+5       0    -1     1     0
+6       1     1     0     0
+7       1     2     3     0
+8       1     0     0     0
+9       2     3     0     3
+10      1     3     1     1
+11      2     1     2     1
+12      1     2     1     0
+13      2     2     1     1
+14      1     1     0     0
+15      1     2     2     0
+16      1     2     0    -2
+17      1     3     2     2
+18      0     1     0     0
+19      0     3     2     3
+20      0     1     0     1
+21      1     3     1     1
+22      1     1     0     0
+23      1     2     1    -1
+24      2     2     0     0
+25      0     1     0     0
+26      1     1     0     0
+27      2     2     2     0
+28      1     2     1     1
+29      1     2    -1     1
+30      1     2     1     2
+31      0     0     0     0
+32      1     2     1    -1
+33      2     2     0     1
+34      2     2     2     2
+35      0     2     2     2
+36      2     3     3     1
+37      0     0     0     0
+38      2     3     2     1
+39      1     2     1     0
+40      2     3     2     2
+41      1     2     1     1
+42      0     2     0     0
+43      1     2     1     0
+44      2     3     2     2
+45      2     2     0     0
+46      3     3     3     3
+47      2    -1     0     0
+48      1     1     0     0
+49      1    -1     2     0
+50      2     0     2     0
+51      0     1     0     0
+52      1     2     1     0
+53      1     2     1     0
+54      0     3     1     1
+55      2     3     2     0
+56      0     0     0     0
+57      3     3     2     2
+58      2     2     1     1
+59      0     2     1     0
+60      1     1     2     2
+61      1     2     1     0
+62      1     2     1     1
+63      0    -1    -1     1
+64      1     2     0     0
+65      0     0     0     0
+66      3     3     3     1
+67      2     3     1     2
+68      1     2     1     1
+69      0     3     0     1
+70      1     2     1     0
+71      1     1     1     0
+72      0     1     0     0
+73      2     3     0     2
+74      1     1     0     1
+75     -1     0    -1     1
+76      0     1     1     0
+77      0     2     1     0
+78      0     3     0    -1
+79      1     1     1     1
+80      0     1     0     0
+81      2     2     2     2
+82      1     3     0     0
+83      2     3     1     2
+84      1     2     2     2
+85      1     3     1     0
+86      2     3     1     0
+87      1     3     1     2
+88      0     1     0    -1
+89      1     2     1     0
+90      1     2     1     2
+91      2     2     2     0
+92      0     2     0     0
+93      1     3     2     2
+94      1     1     0     0
+95      0     2     0     0
+96      2     1     0     0
+97      1     1     1     0
+98      1     2     1     0
+99      0     1     0     0
+100     0     3     0     1
+101     2     3     2     1
+102     1     3     0    -1
+103     2     1     2    -1
+104     0     2     0     1
+105     1     2     1     1
+106     1     2     1     1
+107     0     2     0     1
+108     1     3     0     0
+109     0     2     0     1
+110     2     3     2     2
+111     1     2     2     1
+112     1     1     1     1
+113     0     2     1     1
+114     3     2     0     0
+115     0     2     0     0
+116     1     3     1     0
+117     1     2     1     1
+118    -1     2     0     0
+119     0     1     0     1
+120     0     0     0     0
+121     1     2     1     1
+122     1     2    -2     2
+123     0     3     0     0
+124     0     2     1     0
+125     0     2     1     1
+126     2     2     2     1
+127     1     3     0     1
+128     0     2     2    -1
+129     0     0     0     0
+130     1     2     1     1
+131     1     2     1     0
+132     1     2     1     1
+133     1     1     0     2
+134     2     3     2     1
+135    -1     1    -2     1
+136     2     3     1     0
+137     1     2     0     0
+138     3     3     2     0
+139     0     0     0     1
+140     1     2     0     0
+141    -1     1     0     0
+142     3     3     2     2
+143     0     0     1     1
+144     0     0     0     0
+145     1     1     0     0
+146     1     3     2     1
+147     1     2     0     0
+148    -1     2     0    -1
+149     2     2     2     2
+150     1     0     1     0
+151     1     1     0     0
+152     1     1     0    -1
+153     1     2     0     0
+154    -2     1     0    -1
+155     2     1     0     0
+156    -1     1     0     0
+157     0     1     0     1
+158     2    -1     0     0
+159     1     2     1     1
+160     0     3     0     1
+161     1     2     0     0
+162     1     3     0     1
+163     0     1     2     2
+164     1     1     0     0
+165     1     2     0    -1
+166     2     2     2     2
+167     0     2     0     0
+168     2     1     1     1
+169     2     3     2     1
+170     1     1     1     1
+171    -1     1     0     0
+172     1     2     0     0
+173     2     2     2     2
+174     0     1     0     0
+175     1     1     0     1
+176     1     3     1     1
+177     1     1     2     1
+178     2     2     1     2
+179     2     2     1     1
+180     2     2     0     1
+181     0     2     1     0
+182     3     3     3     1
+183     0     1     0     0
+184     1     2     1     1
+185     1     2     1     2
+186     1     2     1     0
+187     2     2     2     2
+188     1     2     0     0
+189     0     2     0     0
+190     1     1     0     0
+191    -1     2     0     1
+192     1     3     1     0
+193     1     2     1     0
+194     2     2     2     0
+195     1     2     1     0
+196     1    -1     1     1
+197     2     2     2     0
+198     0     2     0     0
+199     1     2     1     1
+200     2    -1     2     1
+201     1     1     1     1
+202     3     3     3     1
+203     1     1     0     0
+204    -1     1     0     0
+205     1     2     0     1
+206     2     2     1     0
+207     0     1     0     1
+208     0    -1     0     0
+209     2     2     2     2
+210     2     2     2     2
+211     0     1     0     0
+212     1     1     1     0
+213     1     1     1     1
+214     1     1     1     1
+215     0     2     0    -1</code></pre>
+</div>
+</div>
+</section>
+<section id="wrangling-multiple-columns-17" class="slide level2">
+<h2>Wrangling multiple columns</h2>
+<ul>
+<li><code>across()</code> also works with <code>summarize()</code>!</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a></a>membersurvey <span class="sc">%&gt;%</span></span>
+<span id="cb83-2"><a></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>), convert_text_to_num)) <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Q13_"</span>), mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  Q13_1 Q13_2 Q13_3 Q13_4
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.949  1.72 0.772 0.567</code></pre>
+</div>
+</div>
+</section>
+<section id="short-break" class="slide level2">
+<h2>Short break</h2>
+<div class="v-center-container">
+<p>Any question so far?</p>
+</div>
+</section>
+<section id="a-segue-to-tibble" class="slide level2">
+<h2>A segue to tibble</h2>
+<ul>
+<li><p>Tibble is a extremely flexible data structure</p>
+<ul>
+<li>A column can be numeric, character, logical, date…etc</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb85-2"><a></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb85-3"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 1
+      x
+  &lt;int&gt;
+1     1
+2     2
+3     3</code></pre>
+</div>
+</div>
+</section>
+<section id="a-segue-to-tibble-1" class="slide level2">
+<h2>A segue to tibble</h2>
+<ul>
+<li><p>Tibble is a extremely flexible data structure</p>
+<ul>
+<li>It can also be a list of vectors</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb87-2"><a></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb87-3"><a></a>  <span class="at">y =</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb87-4"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+      x y        
+  &lt;int&gt; &lt;list&gt;   
+1     1 &lt;int [2]&gt;
+2     2 &lt;int [2]&gt;
+3     3 &lt;int [2]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="a-segue-to-tibble-2" class="slide level2">
+<h2>A segue to tibble</h2>
+<ul>
+<li><p>Tibble is a extremely flexible data structure</p>
+<ul>
+<li>Or even a list of tibbles (or df, or anything)!</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb89-2"><a></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb89-3"><a></a>  <span class="at">y =</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>),</span>
+<span id="cb89-4"><a></a>  <span class="at">z =</span> <span class="fu">list</span>(<span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">b =</span> a<span class="sc">^</span><span class="dv">2</span>), </span>
+<span id="cb89-5"><a></a>           <span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">b =</span> a<span class="sc">^</span><span class="dv">2</span>), </span>
+<span id="cb89-6"><a></a>           <span class="fu">tibble</span>(<span class="at">a =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">b =</span> a<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb89-7"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+      x y         z               
+  &lt;int&gt; &lt;list&gt;    &lt;list&gt;          
+1     1 &lt;int [2]&gt; &lt;tibble [2 × 2]&gt;
+2     2 &lt;int [2]&gt; &lt;tibble [2 × 2]&gt;
+3     3 &lt;int [2]&gt; &lt;tibble [2 × 2]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="a-segue-to-tibble-3" class="slide level2">
+<h2>A segue to tibble</h2>
+<ul>
+<li><p>Tibble is a extremely flexible data structure</p>
+<ul>
+<li><p>We usually think of tidy data this way:</p>
+<ul>
+<li><p>Columns = variables (some characteristics of obs.)</p></li>
+<li><p>Rows = observations (e.g., people, countries)</p></li>
+</ul></li>
+<li><p>Another way to exploit tibble</p>
+<ul>
+<li><p>Columns = different inputs/arguments to a function</p></li>
+<li><p>Rows = different specifications/values to those inputs</p></li>
+<li><p>Then <code>map()</code> a function over those specifications</p></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="mapping-a-function-in-a-tibble" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>A realistic example: running regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a></a><span class="fu">library</span>(gapminder)</span>
+<span id="cb91-2"><a></a><span class="fu">slice_sample</span>(gapminder, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 6
+   country      continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;        &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Uganda       Africa     1957    42.6  6675501      774.
+ 2 Korea, Rep.  Asia       1982    67.1 39326000     5623.
+ 3 Algeria      Africa     1972    54.5 14760787     4183.
+ 4 Panama       Americas   1987    71.5  2253639     7035.
+ 5 Iceland      Europe     1997    79.0   271192    28061.
+ 6 Saudi Arabia Asia       1952    39.9  4005677     6460.
+ 7 Puerto Rico  Americas   1987    74.6  3444468    12281.
+ 8 Slovenia     Europe     1982    71.1  1861252    17867.
+ 9 Zambia       Africa     1967    47.8  3900000     1777.
+10 Yemen, Rep.  Asia       1992    55.6 13367997     1879.</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-1" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>A realistic example: running regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a></a>m1 <span class="ot">&lt;-</span> lifeExp <span class="sc">~</span> gdpPercap</span>
+<span id="cb93-2"><a></a>m1_res <span class="ot">&lt;-</span> <span class="fu">lm</span>(m1, <span class="at">data =</span> gapminder)</span>
+<span id="cb93-3"><a></a><span class="fu">summary</span>(m1_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = m1, data = gapminder)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-82.754  -7.758   2.176   8.225  18.426 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 5.396e+01  3.150e-01  171.29   &lt;2e-16 ***
+gdpPercap   7.649e-04  2.579e-05   29.66   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.49 on 1702 degrees of freedom
+Multiple R-squared:  0.3407,    Adjusted R-squared:  0.3403 
+F-statistic: 879.6 on 1 and 1702 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-2" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>A realistic example: running regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a></a><span class="fu">library</span>(broom)</span>
+<span id="cb95-2"><a></a>m1_res_tidy <span class="ot">&lt;-</span> <span class="fu">tidy</span>(m1_res, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb95-3"><a></a>m1_res_tidy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 7
+  term         estimate std.error statistic   p.value  conf.low conf.high
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept) 54.0      0.315         171.  0         53.3      54.6     
+2 gdpPercap    0.000765 0.0000258      29.7 3.57e-156  0.000714  0.000815</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-3" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>I can run a regression inside a tibble</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb97-2"><a></a>  <span class="at">data =</span> <span class="fu">list</span>(gapminder)</span>
+<span id="cb97-3"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  data                
+  &lt;list&gt;              
+1 &lt;tibble [1,704 × 6]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-4" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>I can run a regression inside a tibble</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb99-2"><a></a>  <span class="at">data =</span> <span class="fu">list</span>(gapminder),</span>
+<span id="cb99-3"><a></a>  <span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x))</span>
+<span id="cb99-4"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  data                 lm_res
+  &lt;list&gt;               &lt;list&gt;
+1 &lt;tibble [1,704 × 6]&gt; &lt;lm&gt;  </code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-5" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>I can run a regression inside a tibble</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb101-2"><a></a>  <span class="at">data =</span> <span class="fu">list</span>(gapminder),</span>
+<span id="cb101-3"><a></a>  <span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x)),</span>
+<span id="cb101-4"><a></a>  <span class="at">lm_res_tidy =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb101-5"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  data                 lm_res lm_res_tidy     
+  &lt;list&gt;               &lt;list&gt; &lt;list&gt;          
+1 &lt;tibble [1,704 × 6]&gt; &lt;lm&gt;   &lt;tibble [2 × 7]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-6" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>I can run a regression inside a tibble</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a></a>lm_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb103-2"><a></a>  <span class="fu">tibble</span>(</span>
+<span id="cb103-3"><a></a>    <span class="at">data =</span> <span class="fu">list</span>(gapminder),</span>
+<span id="cb103-4"><a></a>    <span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x)),</span>
+<span id="cb103-5"><a></a>    <span class="at">lm_res_tidy =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb103-6"><a></a>  )</span>
+<span id="cb103-7"><a></a></span>
+<span id="cb103-8"><a></a>lm_tbl<span class="sc">$</span>lm_res_tidy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 2 × 7
+  term         estimate std.error statistic   p.value  conf.low conf.high
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept) 54.0      0.315         171.  0         53.3      54.6     
+2 gdpPercap    0.000765 0.0000258      29.7 3.57e-156  0.000714  0.000815</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-7" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<div class="v-center-container">
+<p>Why? – We can run <em>many</em> regressions simultaneously and wrangle all output efficiently</p>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-8" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb105-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span></span>
+<span id="cb105-3"><a></a>  <span class="fu">nest</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+# Groups:   continent [5]
+  continent data              
+  &lt;fct&gt;     &lt;list&gt;            
+1 Asia      &lt;tibble [396 × 5]&gt;
+2 Europe    &lt;tibble [360 × 5]&gt;
+3 Africa    &lt;tibble [624 × 5]&gt;
+4 Americas  &lt;tibble [300 × 5]&gt;
+5 Oceania   &lt;tibble [24 × 5]&gt; </code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-9" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb107-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span></span>
+<span id="cb107-3"><a></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb107-4"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+# Groups:   continent [5]
+  continent data               lm_res
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;
+1 Asia      &lt;tibble [396 × 5]&gt; &lt;lm&gt;  
+2 Europe    &lt;tibble [360 × 5]&gt; &lt;lm&gt;  
+3 Africa    &lt;tibble [624 × 5]&gt; &lt;lm&gt;  
+4 Americas  &lt;tibble [300 × 5]&gt; &lt;lm&gt;  
+5 Oceania   &lt;tibble [24 × 5]&gt;  &lt;lm&gt;  </code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-10" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb109-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span></span>
+<span id="cb109-3"><a></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb109-4"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x)),</span>
+<span id="cb109-5"><a></a>         <span class="at">lm_res_tidy =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+# Groups:   continent [5]
+  continent data               lm_res lm_res_tidy     
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt; &lt;list&gt;          
+1 Asia      &lt;tibble [396 × 5]&gt; &lt;lm&gt;   &lt;tibble [2 × 7]&gt;
+2 Europe    &lt;tibble [360 × 5]&gt; &lt;lm&gt;   &lt;tibble [2 × 7]&gt;
+3 Africa    &lt;tibble [624 × 5]&gt; &lt;lm&gt;   &lt;tibble [2 × 7]&gt;
+4 Americas  &lt;tibble [300 × 5]&gt; &lt;lm&gt;   &lt;tibble [2 × 7]&gt;
+5 Oceania   &lt;tibble [24 × 5]&gt;  &lt;lm&gt;   &lt;tibble [2 × 7]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-11" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a></a>by_continent_res <span class="ot">&lt;-</span> </span>
+<span id="cb111-2"><a></a>  gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb111-3"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span></span>
+<span id="cb111-4"><a></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb111-5"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map</span>(data, <span class="sc">~</span> <span class="fu">lm</span>(lifeExp <span class="sc">~</span> gdpPercap, <span class="at">data =</span> .x)),</span>
+<span id="cb111-6"><a></a>         <span class="at">lm_res_tidy =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-12" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a></a>by_continent_res <span class="sc">%&gt;%</span></span>
+<span id="cb112-2"><a></a>  <span class="fu">select</span>(continent, lm_res_tidy) <span class="sc">%&gt;%</span></span>
+<span id="cb112-3"><a></a>  <span class="fu">unnest</span>(lm_res_tidy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 8
+# Groups:   continent [5]
+   continent term      estimate std.error statistic   p.value conf.low conf.high
+   &lt;fct&gt;     &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+ 1 Asia      (Interce…  5.75e+1 0.633         90.8  2.45e-266  5.63e+1 58.8     
+ 2 Asia      gdpPercap  3.23e-4 0.0000393      8.21 3.29e- 15  2.45e-4  0.000400
+ 3 Europe    (Interce…  6.53e+1 0.330        198.   0          6.47e+1 66.0     
+ 4 Europe    gdpPercap  4.53e-4 0.0000192     23.6  4.05e- 75  4.16e-4  0.000491
+ 5 Africa    (Interce…  4.58e+1 0.420        109.   0          4.50e+1 46.7     
+ 6 Africa    gdpPercap  1.38e-3 0.000117      11.7  7.60e- 29  1.15e-3  0.00161 
+ 7 Americas  (Interce…  5.88e+1 0.672         87.5  1.33e-214  5.75e+1 60.2     
+ 8 Americas  gdpPercap  8.16e-4 0.0000702     11.6  5.45e- 26  6.78e-4  0.000954
+ 9 Oceania   (Interce…  6.37e+1 0.729         87.4  1.87e- 29  6.22e+1 65.2     
+10 Oceania   gdpPercap  5.71e-4 0.0000371     15.4  2.99e- 13  4.94e-4  0.000648</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-13" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Running multiple regressions</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a></a>by_continent_res_tidy <span class="ot">&lt;-</span> </span>
+<span id="cb114-2"><a></a>  by_continent_res <span class="sc">%&gt;%</span></span>
+<span id="cb114-3"><a></a>  <span class="fu">select</span>(continent, lm_res_tidy) <span class="sc">%&gt;%</span></span>
+<span id="cb114-4"><a></a>  <span class="fu">unnest</span>(lm_res_tidy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-14" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Visualizing multiple regressions</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a></a>by_continent_res_tidy <span class="sc">%&gt;%</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"gdpPercap"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb115-2"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_reorder</span>(continent, estimate), <span class="at">x =</span> estimate, <span class="at">xmin =</span> conf.low, <span class="at">xmax =</span> conf.high)) <span class="sc">+</span></span>
+<span id="cb115-3"><a></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span> </span>
+<span id="cb115-4"><a></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_vgrid</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"continent"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="many_functions_files/figure-revealjs/unnamed-chunk-55-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="mapping-a-function-in-a-tibble-15" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a></a>m1 <span class="ot">&lt;-</span> lifeExp <span class="sc">~</span> gdpPercap</span>
+<span id="cb116-2"><a></a>m2 <span class="ot">&lt;-</span> lifeExp <span class="sc">~</span> gdpPercap <span class="sc">+</span> <span class="fu">I</span>(gdpPercap<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb116-3"><a></a>m3 <span class="ot">&lt;-</span> lifeExp <span class="sc">~</span> gdpPercap <span class="sc">+</span> <span class="fu">log</span>(gdpPercap)</span>
+<span id="cb116-4"><a></a>m4 <span class="ot">&lt;-</span> lifeExp <span class="sc">~</span> gdpPercap <span class="sc">+</span> <span class="fu">log</span>(gdpPercap) <span class="sc">+</span> <span class="fu">log</span>(pop)</span>
+<span id="cb116-5"><a></a></span>
+<span id="cb116-6"><a></a>model_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"m1"</span> <span class="ot">=</span> m1, <span class="st">"m2"</span> <span class="ot">=</span> m2, <span class="st">"m3"</span> <span class="ot">=</span> m3, <span class="st">"m4"</span> <span class="ot">=</span> m4)</span>
+<span id="cb116-7"><a></a>model_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$m1
+lifeExp ~ gdpPercap
+
+$m2
+lifeExp ~ gdpPercap + I(gdpPercap^2)
+
+$m3
+lifeExp ~ gdpPercap + log(gdpPercap)
+
+$m4
+lifeExp ~ gdpPercap + log(gdpPercap) + log(pop)</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-16" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb118-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb118-3"><a></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">list</span>(model_list)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+# Groups:   continent [5]
+  continent data               model           
+  &lt;fct&gt;     &lt;list&gt;             &lt;list&gt;          
+1 Asia      &lt;tibble [396 × 5]&gt; &lt;named list [4]&gt;
+2 Europe    &lt;tibble [360 × 5]&gt; &lt;named list [4]&gt;
+3 Africa    &lt;tibble [624 × 5]&gt; &lt;named list [4]&gt;
+4 Americas  &lt;tibble [300 × 5]&gt; &lt;named list [4]&gt;
+5 Oceania   &lt;tibble [24 × 5]&gt;  &lt;named list [4]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-17" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb120-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb120-3"><a></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">list</span>(model_list)) <span class="sc">%&gt;%</span></span>
+<span id="cb120-4"><a></a>  <span class="fu">unnest_longer</span>(model, <span class="at">values_to =</span> <span class="st">"formula"</span>, <span class="at">indices_to =</span> <span class="st">"model_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 4
+# Groups:   continent [5]
+   continent data               formula      model_name
+   &lt;fct&gt;     &lt;list&gt;             &lt;named list&gt; &lt;chr&gt;     
+ 1 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m1        
+ 2 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m2        
+ 3 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m3        
+ 4 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m4        
+ 5 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m1        
+ 6 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m2        
+ 7 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m3        
+ 8 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m4        
+ 9 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m1        
+10 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m2        
+11 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m3        
+12 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m4        
+13 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m1        
+14 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m2        
+15 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m3        
+16 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m4        
+17 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m1        
+18 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m2        
+19 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m3        
+20 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m4        </code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-18" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb122-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb122-3"><a></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">list</span>(model_list)) <span class="sc">%&gt;%</span></span>
+<span id="cb122-4"><a></a>  <span class="fu">unnest_longer</span>(model, <span class="at">values_to =</span> <span class="st">"formula"</span>, <span class="at">indices_to =</span> <span class="st">"model_name"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb122-5"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map2</span>(formula, data, lm)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 5
+# Groups:   continent [5]
+   continent data               formula      model_name lm_res      
+   &lt;fct&gt;     &lt;list&gt;             &lt;named list&gt; &lt;chr&gt;      &lt;named list&gt;
+ 1 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m1         &lt;lm&gt;        
+ 2 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m2         &lt;lm&gt;        
+ 3 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m3         &lt;lm&gt;        
+ 4 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m4         &lt;lm&gt;        
+ 5 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m1         &lt;lm&gt;        
+ 6 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m2         &lt;lm&gt;        
+ 7 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m3         &lt;lm&gt;        
+ 8 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m4         &lt;lm&gt;        
+ 9 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m1         &lt;lm&gt;        
+10 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m2         &lt;lm&gt;        
+11 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m3         &lt;lm&gt;        
+12 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m4         &lt;lm&gt;        
+13 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m1         &lt;lm&gt;        
+14 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m2         &lt;lm&gt;        
+15 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m3         &lt;lm&gt;        
+16 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m4         &lt;lm&gt;        
+17 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m1         &lt;lm&gt;        
+18 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m2         &lt;lm&gt;        
+19 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m3         &lt;lm&gt;        
+20 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m4         &lt;lm&gt;        </code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-19" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb124-2"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb124-3"><a></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">list</span>(model_list)) <span class="sc">%&gt;%</span></span>
+<span id="cb124-4"><a></a>  <span class="fu">unnest_longer</span>(model, <span class="at">values_to =</span> <span class="st">"formula"</span>, <span class="at">indices_to =</span> <span class="st">"model_name"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-5"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map2</span>(formula, data, lm),</span>
+<span id="cb124-6"><a></a>         <span class="at">lm_res =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 5
+# Groups:   continent [5]
+   continent data               formula      model_name lm_res          
+   &lt;fct&gt;     &lt;list&gt;             &lt;named list&gt; &lt;chr&gt;      &lt;named list&gt;    
+ 1 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m1         &lt;tibble [2 × 7]&gt;
+ 2 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m2         &lt;tibble [3 × 7]&gt;
+ 3 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m3         &lt;tibble [3 × 7]&gt;
+ 4 Asia      &lt;tibble [396 × 5]&gt; &lt;formula&gt;    m4         &lt;tibble [4 × 7]&gt;
+ 5 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m1         &lt;tibble [2 × 7]&gt;
+ 6 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m2         &lt;tibble [3 × 7]&gt;
+ 7 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m3         &lt;tibble [3 × 7]&gt;
+ 8 Europe    &lt;tibble [360 × 5]&gt; &lt;formula&gt;    m4         &lt;tibble [4 × 7]&gt;
+ 9 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m1         &lt;tibble [2 × 7]&gt;
+10 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m2         &lt;tibble [3 × 7]&gt;
+11 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m3         &lt;tibble [3 × 7]&gt;
+12 Africa    &lt;tibble [624 × 5]&gt; &lt;formula&gt;    m4         &lt;tibble [4 × 7]&gt;
+13 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m1         &lt;tibble [2 × 7]&gt;
+14 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m2         &lt;tibble [3 × 7]&gt;
+15 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m3         &lt;tibble [3 × 7]&gt;
+16 Americas  &lt;tibble [300 × 5]&gt; &lt;formula&gt;    m4         &lt;tibble [4 × 7]&gt;
+17 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m1         &lt;tibble [2 × 7]&gt;
+18 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m2         &lt;tibble [3 × 7]&gt;
+19 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m3         &lt;tibble [3 × 7]&gt;
+20 Oceania   &lt;tibble [24 × 5]&gt;  &lt;formula&gt;    m4         &lt;tibble [4 × 7]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-20" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a></a>many_models_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb126-2"><a></a>  gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb126-3"><a></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb126-4"><a></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">list</span>(model_list)) <span class="sc">%&gt;%</span></span>
+<span id="cb126-5"><a></a>  <span class="fu">unnest_longer</span>(model, <span class="at">values_to =</span> <span class="st">"formula"</span>, <span class="at">indices_to =</span> <span class="st">"model_name"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb126-6"><a></a>  <span class="fu">mutate</span>(<span class="at">lm_res =</span> <span class="fu">map2</span>(formula, data, lm),</span>
+<span id="cb126-7"><a></a>         <span class="at">lm_res =</span> <span class="fu">map</span>(lm_res, <span class="sc">~</span> <span class="fu">tidy</span>(.x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-21" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a></a>many_models_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb127-2"><a></a>  <span class="fu">select</span>(continent, model_name, lm_res) <span class="sc">%&gt;%</span></span>
+<span id="cb127-3"><a></a>  <span class="fu">unnest</span>(lm_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 60 × 9
+# Groups:   continent [5]
+   continent model_name term     estimate std.error statistic   p.value conf.low
+   &lt;fct&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Asia      m1         (Interc…  5.75e+1  6.33e- 1     90.8  2.45e-266  5.63e+1
+ 2 Asia      m1         gdpPerc…  3.23e-4  3.93e- 5      8.21 3.29e- 15  2.45e-4
+ 3 Asia      m2         (Interc…  5.38e+1  6.20e- 1     86.8  1.65e-258  5.26e+1
+ 4 Asia      m2         gdpPerc…  1.12e-3  7.42e- 5     15.1  4.05e- 41  9.78e-4
+ 5 Asia      m2         I(gdpPe… -1.03e-8  8.47e-10    -12.1  7.01e- 29 -1.19e-8
+ 6 Asia      m3         (Interc… -6.16e+0  3.67e+ 0     -1.68 9.38e-  2 -1.34e+1
+ 7 Asia      m3         gdpPerc… -2.73e-4  4.50e- 5     -6.07 3.04e-  9 -3.62e-4
+ 8 Asia      m3         log(gdp…  8.47e+0  4.84e- 1     17.5  3.55e- 51  7.52e+0
+ 9 Asia      m4         (Interc… -4.56e+1  5.63e+ 0     -8.10 6.83e- 15 -5.67e+1
+10 Asia      m4         gdpPerc… -2.46e-4  4.14e- 5     -5.94 6.19e-  9 -3.27e-4
+# ℹ 50 more rows
+# ℹ 1 more variable: conf.high &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-22" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a></a>many_models_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb129-2"><a></a>  <span class="fu">select</span>(continent, model_name, lm_res) <span class="sc">%&gt;%</span></span>
+<span id="cb129-3"><a></a>  <span class="fu">unnest</span>(lm_res) <span class="sc">%&gt;%</span></span>
+<span id="cb129-4"><a></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"gdpPercap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 9
+# Groups:   continent [5]
+   continent model_name term      estimate std.error statistic  p.value conf.low
+   &lt;fct&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Asia      m1         gdpPercap  3.23e-4 0.0000393     8.21  3.29e-15  2.45e-4
+ 2 Asia      m2         gdpPercap  1.12e-3 0.0000742    15.1   4.05e-41  9.78e-4
+ 3 Asia      m3         gdpPercap -2.73e-4 0.0000450    -6.07  3.04e- 9 -3.62e-4
+ 4 Asia      m4         gdpPercap -2.46e-4 0.0000414    -5.94  6.19e- 9 -3.27e-4
+ 5 Europe    m1         gdpPercap  4.53e-4 0.0000192    23.6   4.05e-75  4.16e-4
+ 6 Europe    m2         gdpPercap  9.50e-4 0.0000607    15.6   2.28e-42  8.30e-4
+ 7 Europe    m3         gdpPercap -3.17e-5 0.0000423    -0.750 4.54e- 1 -1.15e-4
+ 8 Europe    m4         gdpPercap -4.57e-5 0.0000417    -1.10  2.74e- 1 -1.28e-4
+ 9 Africa    m1         gdpPercap  1.38e-3 0.000117     11.7   7.60e-29  1.15e-3
+10 Africa    m2         gdpPercap  3.68e-3 0.000266     13.8   3.31e-38  3.16e-3
+11 Africa    m3         gdpPercap -3.90e-4 0.000212     -1.84  6.60e- 2 -8.05e-4
+12 Africa    m4         gdpPercap -3.71e-4 0.000210     -1.77  7.76e- 2 -7.84e-4
+13 Americas  m1         gdpPercap  8.16e-4 0.0000702    11.6   5.45e-26  6.78e-4
+14 Americas  m2         gdpPercap  2.36e-3 0.000182     13.0   9.81e-31  2.00e-3
+15 Americas  m3         gdpPercap -4.76e-4 0.000125     -3.79  1.79e- 4 -7.23e-4
+16 Americas  m4         gdpPercap -4.55e-4 0.000128     -3.55  4.50e- 4 -7.07e-4
+17 Oceania   m1         gdpPercap  5.71e-4 0.0000371    15.4   2.99e-13  4.94e-4
+18 Oceania   m2         gdpPercap  1.03e-3 0.000189      5.43  2.19e- 5  6.33e-4
+19 Oceania   m3         gdpPercap  2.35e-4 0.000192      1.22  2.35e- 1 -1.64e-4
+20 Oceania   m4         gdpPercap  3.23e-4 0.000194      1.66  1.12e- 1 -8.25e-5
+# ℹ 1 more variable: conf.high &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-23" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a></a>many_models_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb131-2"><a></a>  <span class="fu">select</span>(continent, model_name, lm_res) <span class="sc">%&gt;%</span></span>
+<span id="cb131-3"><a></a>  <span class="fu">unnest</span>(lm_res) <span class="sc">%&gt;%</span></span>
+<span id="cb131-4"><a></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"gdpPercap"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb131-5"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_rev</span>(model_name), </span>
+<span id="cb131-6"><a></a>             <span class="at">color =</span> model_name, </span>
+<span id="cb131-7"><a></a>             <span class="at">x =</span> estimate, <span class="at">xmin =</span> conf.low, <span class="at">xmax =</span> conf.high)) <span class="sc">+</span></span>
+<span id="cb131-8"><a></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span></span>
+<span id="cb131-9"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb131-10"><a></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> continent, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb131-11"><a></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Model"</span>) <span class="sc">+</span></span>
+<span id="cb131-12"><a></a>  <span class="fu">scale_color_brewer</span>(<span class="at">type =</span> <span class="st">"qual"</span>, <span class="at">palette =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb131-13"><a></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_vgrid</span>() <span class="sc">+</span></span>
+<span id="cb131-14"><a></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.75</span>,<span class="fl">0.25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mapping-a-function-in-a-tibble-24" class="slide level2">
+<h2>Mapping a function in a tibble</h2>
+<ul>
+<li>Many specifications: 4 models x 5 continents</li>
+</ul>
+
+<img data-src="many_functions_files/figure-revealjs/unnamed-chunk-65-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="any-questions" class="slide level2">
+<h2>Any questions?</h2>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
+</div>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
