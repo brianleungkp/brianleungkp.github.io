@@ -1,0 +1,970 @@
+---
+title: "Efficient R Programming"
+subtitle: "Working with Many Columns, Functions, and Models"
+author: Brian Leung
+institute: CSSCR & Political Science, UW
+format: 
+  revealjs:
+    slide-number: true
+    include-in-header: 
+      text: |
+        <style>
+        .v-center-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 75%;
+        }
+        </style>
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+-   Rule of thumb: "consider writing a **function** whenever you’ve copied and pasted a block of code more than twice"
+
+-   What is in a function?
+
+    -   Input → Output
+
+-   In R, you can write a named function
+
+```{r}
+#| echo: true
+multiply <- function(x, y) { x * y }
+multiply(2, 3)
+```
+
+## Introduction
+
+-   Benefits of functional programming
+
+    -   Reduce redundancy & improve readability
+
+        -   Less copy-and-paste and mistakes; more reusable
+
+    -   Encourage modular thinking
+
+        -   Break complex workflows into small, testable functions
+
+    -   Enhance scalability
+
+        -   Apply across many observations, columns or datasets
+
+    -   tidyverse pipelines friendly
+
+        -   Integrate with `mutate()`, `across()`, `map()`
+
+## Operations in R
+
+-   Step back and think about basic operations in R
+
+```{r}
+#| echo: true
+nums <- 1:10
+nums
+```
+
+## Operations in R
+
+-   What if I want to add 1 to each and every value?
+
+```{r}
+#| echo: true
+nums <- 1:10
+nums + 1
+```
+
+-   Why it works?
+
+## Operations in R
+
+-   It's like having two vectors of the same length
+
+```{r}
+#| echo: true
+nums
+ones <- rep(1, 10)
+ones
+```
+
+-   And adding two vectors together *at once*
+
+```{r}
+#| echo: true
+nums + ones
+```
+
+## Operations in R
+
+::: v-center-container
+Vectorized operation is extremely fast and efficient
+:::
+
+## Operations in R
+
+-   Let's go to another extreme: for loop
+
+```{r}
+#| echo: true
+for (i in 1:length(nums)) {
+  print(nums[i] + 1)
+}
+```
+
+## Operations in R
+
+-   It iterates through each and every value
+
+    -   It's generally slower and involves more memory & computational overhead
+
+```{r}
+#| echo: true
+x <- 1:1e6
+
+system.time({
+  x <- x + 1
+})
+
+system.time({
+  for (i in 1:length(x)) x[i] <- x[i] + 1
+})
+```
+
+## Operations in R
+
+-   Vectorized operation
+
+    -   "Do this operation on the whole vector at once!"
+
+-   For loop
+
+    -   "Do this, then this, then ... -- repeat manually for each element!"
+
+-   Functional programming
+
+    -   "Define a function and apply it automatically to each element or column!"
+
+## Functions and map()
+
+```{r}
+#| echo: true
+add_one <- function(x) {
+  x + 1
+}
+
+add_one(1:10)
+```
+
+## Functions and map()
+
+```{r}
+#| echo: true
+library(purrr)
+map(1:10, add_one)
+map_dbl(1:10, add_one)
+```
+
+## Functions and map()
+
+-   Why uses map()?
+
+    -   B/c many operations don't work with vectors
+
+```{r}
+#| echo: true
+add_one_scalar <- function(x) {
+  if (length(x) != 1) stop("Only one number at a time!")
+  x + 1
+}
+```
+
+-   It doesn't work on vectors
+
+```{r}
+#| echo: true
+#| error: true
+add_one_scalar(1:10)
+```
+
+## Functions and map()
+
+-   But `map()` works
+
+```{r}
+#| echo: true
+map_dbl(1:10, add_one_scalar)
+```
+
+## Functions and map()
+
+-   A more realistic example: a list of vectors
+
+```{r}
+#| echo: true
+some_data <- list(
+ "Group A" = rnorm(5),
+ "Group B" = rnorm(5),
+ "Group C" = rnorm(5)
+)
+
+some_data
+class(some_data)
+```
+
+## Functions and map()
+
+-   A more realistic example: a list of vectors
+
+```{r}
+#| echo: true
+#| warning: true
+mean(some_data)
+```
+
+-   Why error?
+
+## Functions and map()
+
+-   A more realistic example: a list of vectors
+
+```{r}
+#| echo: true
+map(some_data, mean)
+```
+
+## Functions and map()
+
+-   Why if you need more flexibility from functions?
+
+```{r}
+#| echo: true
+some_data <- list(
+ "Group A" = c(rnorm(4), NA),
+ "Group B" = c(rnorm(4), NA),
+ "Group C" = c(rnorm(4), NA)
+)
+
+map(some_data, mean)
+```
+
+## Functions and map()
+
+-   Define a new function that takes care of NAs
+
+```{r}
+#| echo: true
+mean_ignore_na <- function(x) { mean(x, na.rm = TRUE) }
+
+map(some_data, mean_ignore_na)
+```
+
+## Functions and map()
+
+-   Or, you can directly write an *anonymous function*
+
+```{r}
+#| echo: true
+map(some_data, function(x) { mean(x, na.rm = TRUE) })
+```
+
+## Functions and map()
+
+-   Or, using shorthand `~` (lambda) and `.x` (placeholder)
+
+```{r}
+#| echo: true
+map(some_data, ~ mean(.x, na.rm = TRUE))
+```
+
+## Wrangling multiple columns
+
+-   Iris example
+
+```{r}
+#| echo: true
+library(tidyverse)
+iris <- as_tibble(iris)
+iris
+```
+
+## Wrangling multiple columns
+
+-   Round up one column
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(Sepal.Length = round(Sepal.Length))
+```
+
+## Wrangling multiple columns
+
+-   How about multiple columns?
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(Sepal.Length = round(Sepal.Length),
+         Sepal.Width = round(Sepal.Width),
+         Petal.Length = round(Petal.Length),
+         Petal.Width = round(Petal.Width))
+```
+
+## Wrangling multiple columns
+
+-   Using `across()` with function
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(.cols = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width),
+                .fns = round))
+```
+
+## Wrangling multiple columns
+
+-   For simplicity
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(Sepal.Length:Petal.Width, round))
+```
+
+## Wrangling multiple columns
+
+-   Target specific columns
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(starts_with("Sepal"), round))
+```
+
+## Wrangling multiple columns
+
+-   Target specific columns
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(ends_with("Width"), round))
+```
+
+## Wrangling multiple columns
+
+-   Target specific columns
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(matches("Sepal|Petal"), round))
+```
+
+## Wrangling multiple columns
+
+-   Target specific columns based on *another function*
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(where(is.numeric), round))
+```
+
+## Wrangling multiple columns
+
+-   Using anonymous function to further specify arguments
+
+```{r}
+#| echo: true
+iris %>%
+  mutate(across(where(is.numeric), ~ round(.x, digits = -1)))
+```
+
+## Wrangling multiple columns
+
+-   A more realistic example: survey data
+
+```{r}
+#| echo: true
+library(surveydata)
+membersurvey <- as_tibble(surveydata::membersurvey)
+glimpse(membersurvey)
+```
+
+## Wrangling multiple columns
+
+-   Converting text to binary values
+
+```{r}
+#| echo: true
+membersurvey %>%
+  mutate(Q3_1 = if_else(Q3_1 == "Yes", 1, 0))
+```
+
+## Wrangling multiple columns
+
+-   Converting all Q3\_\* columns
+
+```{r}
+#| echo: true
+membersurvey %>%
+  mutate(across(starts_with("Q3_"), ~ if_else(.x == "Yes", 1, 0)))
+```
+
+## Wrangling multiple columns
+
+-   Q13\_\* columns are coded in Likert scale values in text
+
+```{r}
+#| echo: true
+membersurvey %>%
+  select(starts_with("Q13_"))
+```
+
+## Wrangling multiple columns
+
+::::: columns
+::: {.column width="60%"}
+-   Manually recode all columns
+
+```{r}
+#| echo: true
+#| eval: false
+membersurvey %>%
+  select(starts_with("Q13_")) %>%
+  mutate(
+    Q13_1 =  case_when(
+      Q13_1 == "Completely dissatisfied" ~ -3,
+      Q13_1 == "Very dissatisfied" ~ -2,
+      Q13_1 == "Dissatisfied" ~ -1,
+      Q13_1 == "Neutral" ~ 0,
+      Q13_1 == "Satisfied" ~ 1,
+      Q13_1 == "Very satisfied" ~ 2,
+      Q13_1 == "Completely satisfied" ~ 3
+    ),
+    Q13_2 =  case_when(
+      Q13_2 == "Completely dissatisfied" ~ -3,
+      Q13_2 == "Very dissatisfied" ~ -2,
+      Q13_2 == "Dissatisfied" ~ -1,
+      Q13_2 == "Neutral" ~ 0,
+      Q13_2 == "Satisfied" ~ 1,
+      Q13_2 == "Very satisfied" ~ 2,
+      Q13_2 == "Completely satisfied" ~ 3
+    ),
+    Q13_3 =  case_when(
+      Q13_3 == "Completely dissatisfied" ~ -3,
+      Q13_3 == "Very dissatisfied" ~ -2,
+      Q13_3 == "Dissatisfied" ~ -1,
+      Q13_3 == "Neutral" ~ 0,
+      Q13_3 == "Satisfied" ~ 1,
+      Q13_3 == "Very satisfied" ~ 2,
+      Q13_3 == "Completely satisfied" ~ 3
+    ),
+    Q13_4 =  case_when(
+      Q13_4 == "Completely dissatisfied" ~ -3,
+      Q13_4 == "Very dissatisfied" ~ -2,
+      Q13_4 == "Dissatisfied" ~ -1,
+      Q13_4 == "Neutral" ~ 0,
+      Q13_4 == "Satisfied" ~ 1,
+      Q13_4 == "Very satisfied" ~ 2,
+      Q13_4 == "Completely satisfied" ~ 3
+    )
+  )
+```
+:::
+
+::: {.column width="40%"}
+-   Output
+
+```{r}
+#| echo: false
+#| eval: true
+membersurvey %>%
+  select(starts_with("Q13_")) %>%
+  mutate(
+    Q13_1 =  case_when(
+      Q13_1 == "Completely dissatisfied" ~ -3,
+      Q13_1 == "Very dissatisfied" ~ -2,
+      Q13_1 == "Dissatisfied" ~ -1,
+      Q13_1 == "Neutral" ~ 0,
+      Q13_1 == "Satisfied" ~ 1,
+      Q13_1 == "Very satisfied" ~ 2,
+      Q13_1 == "Completely satisfied" ~ 3
+    ),
+    Q13_2 =  case_when(
+      Q13_2 == "Completely dissatisfied" ~ -3,
+      Q13_2 == "Very dissatisfied" ~ -2,
+      Q13_2 == "Dissatisfied" ~ -1,
+      Q13_2 == "Neutral" ~ 0,
+      Q13_2 == "Satisfied" ~ 1,
+      Q13_2 == "Very satisfied" ~ 2,
+      Q13_2 == "Completely satisfied" ~ 3
+    ),
+    Q13_3 =  case_when(
+      Q13_3 == "Completely dissatisfied" ~ -3,
+      Q13_3 == "Very dissatisfied" ~ -2,
+      Q13_3 == "Dissatisfied" ~ -1,
+      Q13_3 == "Neutral" ~ 0,
+      Q13_3 == "Satisfied" ~ 1,
+      Q13_3 == "Very satisfied" ~ 2,
+      Q13_3 == "Completely satisfied" ~ 3
+    ),
+    Q13_4 =  case_when(
+      Q13_4 == "Completely dissatisfied" ~ -3,
+      Q13_4 == "Very dissatisfied" ~ -2,
+      Q13_4 == "Dissatisfied" ~ -1,
+      Q13_4 == "Neutral" ~ 0,
+      Q13_4 == "Satisfied" ~ 1,
+      Q13_4 == "Very satisfied" ~ 2,
+      Q13_4 == "Completely satisfied" ~ 3
+    )
+  )
+```
+:::
+:::::
+
+## Wrangling multiple columns
+
+-   Functional approach: write a simple function!
+
+```{r}
+#| echo: true
+
+convert_text_to_num <- function(x) {
+  case_when(
+    x == "Completely dissatisfied" ~ -3,
+    x == "Very dissatisfied" ~ -2,
+    x == "Dissatisfied" ~ -1,
+    x == "Neutral" ~ 0,
+    x == "Satisfied" ~ 1,               
+    x == "Very satisfied" ~ 2,
+    x == "Completely satisfied" ~ 3
+  )
+}
+
+convert_text_to_num("Dissatisfied")
+convert_text_to_num("Satisfied")
+```
+
+## Wrangling multiple columns
+
+-   Functional approach: apply the function across columns
+
+```{r}
+#| echo: true
+membersurvey %>%
+  mutate(across(starts_with("Q13_"), convert_text_to_num)) %>%
+  select(starts_with("Q13_"))
+```
+
+## Wrangling multiple columns
+
+-   `across()` also works with `summarize()`!
+
+```{r}
+#| echo: true
+membersurvey %>%
+  mutate(across(starts_with("Q13_"), convert_text_to_num)) %>%
+  summarize(across(starts_with("Q13_"), mean))
+```
+
+## Short break
+
+::: v-center-container
+Any question so far?
+:::
+
+## A segue to tibble
+
+-   Tibble is a extremely flexible data structure
+
+    -   A column can be numeric, character, logical, date...etc
+
+```{r}
+#| echo: true
+tibble(
+  x = 1:3
+)
+```
+
+## A segue to tibble
+
+-   Tibble is a extremely flexible data structure
+
+    -   It can also be a list of vectors
+
+```{r}
+#| echo: true
+tibble(
+  x = 1:3,
+  y = list(1:2, 3:4, 5:6)
+)
+```
+
+## A segue to tibble
+
+-   Tibble is a extremely flexible data structure
+
+    -   Or even a list of tibbles (or df, or anything)!
+
+```{r}
+#| echo: true
+tibble(
+  x = 1:3,
+  y = list(1:2, 3:4, 5:6),
+  z = list(tibble(a = 1:2, b = a^2), 
+           tibble(a = 3:4, b = a^2), 
+           tibble(a = 5:6, b = a^2))
+)
+
+```
+
+## A segue to tibble
+
+-   Tibble is a extremely flexible data structure
+
+    -   We usually think of tidy data this way:
+
+        -   Columns = variables (some characteristics of obs.)
+
+        -   Rows = observations (e.g., people, countries)
+
+    -   Another way to exploit tibble
+
+        -   Columns = different inputs/arguments to a function
+
+        -   Rows = different specifications/values to those inputs
+
+        -   Then `map()` a function over those specifications
+
+## Mapping a function in a tibble
+
+-   A realistic example: running regressions
+
+```{r}
+#| echo: true
+library(gapminder)
+slice_sample(gapminder, n = 10)
+```
+
+## Mapping a function in a tibble
+
+-   A realistic example: running regressions
+
+```{r}
+#| echo: true
+m1 <- lifeExp ~ gdpPercap
+m1_res <- lm(m1, data = gapminder)
+summary(m1_res)
+```
+
+## Mapping a function in a tibble
+
+-   A realistic example: running regressions
+
+```{r}
+#| echo: true
+library(broom)
+m1_res_tidy <- tidy(m1_res, conf.int = TRUE)
+m1_res_tidy
+```
+
+## Mapping a function in a tibble
+
+-   I can run a regression inside a tibble
+
+```{r}
+#| echo: true
+tibble(
+  data = list(gapminder)
+)
+```
+
+## Mapping a function in a tibble
+
+-   I can run a regression inside a tibble
+
+```{r}
+#| echo: true
+tibble(
+  data = list(gapminder),
+  lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x))
+)
+```
+
+## Mapping a function in a tibble
+
+-   I can run a regression inside a tibble
+
+```{r}
+#| echo: true
+tibble(
+  data = list(gapminder),
+  lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x)),
+  lm_res_tidy = map(lm_res, ~ tidy(.x, conf.int = TRUE))
+)
+```
+
+## Mapping a function in a tibble
+
+-   I can run a regression inside a tibble
+
+```{r}
+#| echo: true
+lm_tbl <- 
+  tibble(
+    data = list(gapminder),
+    lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x)),
+    lm_res_tidy = map(lm_res, ~ tidy(.x, conf.int = TRUE))
+  )
+
+lm_tbl$lm_res_tidy
+```
+
+## Mapping a function in a tibble
+
+::: v-center-container
+Why? -- We can run *many* regressions simultaneously and wrangle all output efficiently
+:::
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>%
+  nest()
+```
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>%
+  nest() %>%
+  mutate(lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x)))
+```
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>%
+  nest() %>%
+  mutate(lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x)),
+         lm_res_tidy = map(lm_res, ~ tidy(.x, conf.int = TRUE)))
+```
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+by_continent_res <- 
+  gapminder %>%
+  group_by(continent) %>%
+  nest() %>%
+  mutate(lm_res = map(data, ~ lm(lifeExp ~ gdpPercap, data = .x)),
+         lm_res_tidy = map(lm_res, ~ tidy(.x, conf.int = TRUE)))
+```
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+by_continent_res %>%
+  select(continent, lm_res_tidy) %>%
+  unnest(lm_res_tidy)
+```
+
+## Mapping a function in a tibble
+
+-   Running multiple regressions
+
+```{r}
+#| echo: true
+by_continent_res_tidy <- 
+  by_continent_res %>%
+  select(continent, lm_res_tidy) %>%
+  unnest(lm_res_tidy)
+```
+
+## Mapping a function in a tibble
+
+-   Visualizing multiple regressions
+
+```{r}
+#| echo: true
+#| fig-align: center
+by_continent_res_tidy %>% filter(term == "gdpPercap") %>%
+  ggplot(aes(y = fct_reorder(continent, estimate), x = estimate, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() + 
+  cowplot::theme_minimal_vgrid() + labs(y = "continent")
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+m1 <- lifeExp ~ gdpPercap
+m2 <- lifeExp ~ gdpPercap + I(gdpPercap^2)
+m3 <- lifeExp ~ gdpPercap + log(gdpPercap)
+m4 <- lifeExp ~ gdpPercap + log(gdpPercap) + log(pop)
+
+model_list <- list("m1" = m1, "m2" = m2, "m3" = m3, "m4" = m4)
+model_list
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>% nest() %>%
+  mutate(model = list(model_list)) 
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>% nest() %>%
+  mutate(model = list(model_list)) %>%
+  unnest_longer(model, values_to = "formula", indices_to = "model_name")
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>% nest() %>%
+  mutate(model = list(model_list)) %>%
+  unnest_longer(model, values_to = "formula", indices_to = "model_name") %>%
+  mutate(lm_res = map2(formula, data, lm)) 
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+gapminder %>%
+  group_by(continent) %>% nest() %>%
+  mutate(model = list(model_list)) %>%
+  unnest_longer(model, values_to = "formula", indices_to = "model_name") %>%
+  mutate(lm_res = map2(formula, data, lm),
+         lm_res = map(lm_res, ~ tidy(.x, conf.int = TRUE))) 
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+many_models_tbl <- 
+  gapminder %>%
+  group_by(continent) %>% nest() %>%
+  mutate(model = list(model_list)) %>%
+  unnest_longer(model, values_to = "formula", indices_to = "model_name") %>%
+  mutate(lm_res = map2(formula, data, lm),
+         lm_res = map(lm_res, ~ tidy(.x, conf.int = TRUE))) 
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+many_models_tbl %>%
+  select(continent, model_name, lm_res) %>%
+  unnest(lm_res)
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+many_models_tbl %>%
+  select(continent, model_name, lm_res) %>%
+  unnest(lm_res) %>%
+  filter(term == "gdpPercap")
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: true
+#| eval: false
+many_models_tbl %>%
+  select(continent, model_name, lm_res) %>%
+  unnest(lm_res) %>%
+  filter(term == "gdpPercap") %>%
+  ggplot(aes(y = fct_rev(model_name), 
+             color = model_name, 
+             x = estimate, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() +
+  geom_vline(xintercept = 0, linetype = 2) +
+  facet_wrap(~ continent, scales = "free_x") +
+  labs(y = "Model") +
+  scale_color_brewer(type = "qual", palette = 3) +
+  cowplot::theme_minimal_vgrid() +
+  theme(legend.position = c(0.75,0.25))
+```
+
+## Mapping a function in a tibble
+
+-   Many specifications: 4 models x 5 continents
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+many_models_tbl %>%
+  select(continent, model_name, lm_res) %>%
+  unnest(lm_res) %>%
+  filter(term == "gdpPercap") %>%
+  ggplot(aes(y = fct_rev(model_name), 
+             color = model_name, 
+             x = estimate, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() +
+  geom_vline(xintercept = 0, linetype = 2) +
+  facet_wrap(~ continent, scales = "free_x") +
+  labs(y = "Model") +
+  scale_color_brewer(type = "qual", palette = 3) +
+  cowplot::theme_minimal_vgrid() +
+  theme(legend.position = c(0.75,0.25))
+```
+
+## Any questions?
