@@ -8,7 +8,7 @@ title: "Teaching"
 
 -   A workshop offered at the Center for Social Science Computation and Research (CSSCR)
 
--   [Slides](workshops/many_functions/many_functions.qmd) 
+-   [Slides](workshops/many_functions/many_functions.qmd)
 
 ### Data visualization
 
@@ -19,3 +19,5 @@ title: "Teaching"
 -   [Slides](workshops/datavis/data_vis_lab/data_vis_10lessons.qmd) with step-by-step code and output (written with `flipbookr`)
 
 -   A [customized theme](workshops/datavis/theme_cavis.R) for ggplot2
+
+-   Based on the CSSS 569 teaching materials that include the following topics: [intro to ggplot2](workshops/csss-569-datavis/lab3/lab3_slides.html), [advanced ggplot2](workshops/csss-569-datavis/lab4/lab4_slides.html), [visualizing spatial data](workshops/csss-569-datavis/lab6/lab6_slides.html), [visualizing relational data](workshops/csss-569-datavis/lab7/lab7_slides.html), [interactive visual display](workshops/csss-569-datavis/lab8/lab8_slides.pdf), [new extension packages](workshops/csss-569-datavis/lab9/lab9_slides.html)
