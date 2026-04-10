@@ -1,6 +1,6 @@
 ---
 title: "Brian Leung"
-image: images/BL-portrait.png
+image: images/BL-portrait.jpg
 about: 
   template: broadside
 ---
